@@ -21,9 +21,6 @@ class PyPdfEditor(QtWidgets.QDialog):
         self.output_tree_widget = QtWidgets.QTreeWidget()
         self.output_tree_frame.layout().addWidget(self.output_tree_widget, 0,0,0,0)
 
-        
-
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
