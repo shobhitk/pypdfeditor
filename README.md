@@ -1,2 +1,4 @@
 # pypdfeditor
-Python PyQt5 Based PDF Split Merge Reordering Tool
+Python PyQt6 Based PDF Split Merge Reordering Tool
+
+
