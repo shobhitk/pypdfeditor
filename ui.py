@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 import sys
+from PyQt6.QtWidgets import QTreeWidgetItem
 import pypdf
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
@@ -11,8 +12,12 @@ class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, text, *args):
         super(OutputTreeWidgetItem, self).__init__(*args)
         self.setText(0, text)
-        if str(self.parent()) == "OutputTreeWidget":
-            self.setFlags(QtCore.Qt.ItemIsDragEnabled)
+        if self.parent():
+            self.setFlags(self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled |
+                          ~QtCore.Qt.ItemFlag.ItemIsDropEnabled)
+        else:
+            self.setFlags(self.flags() & ~QtCore.Qt.ItemFlag.ItemIsDragEnabled |
+                          QtCore.Qt.ItemFlag.ItemIsDropEnabled)
         
 
 class OutputTreeWidget(QtWidgets.QTreeWidget):
@@ -32,40 +37,75 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         source_item.dropMimeData(
             data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex())
         return source_item.item(0, 0).text()
+    
 
+    def check_drop_position(self, pos, rect):
+        indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnViewport
+        if not self.dragDropOverwriteMode():
+            margin = int(max(2, min(rect.height() / 5.5, 12)))
+            if pos.y() - rect.top() < margin:
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
+            elif rect.bottom() - pos.y() < margin:
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
+            elif rect.contains(pos, True):
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
+        else:
+            touching = rect.adjust(-1, -1, 1, 1)
+            if touching.contains(pos.toPoint(), False):
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
+        if (indicator == QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem):
+            if pos.y() < rect.center().y():
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
+            else:
+                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
+        return indicator
 
-    def dragEnterEvent(self, event: QtGui.QDragEnterEvent) -> None:
+    def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
+        drag_move_index = self.indexAt(event.position().toPoint())
+        if not self.itemFromIndex(drag_move_index):
+            event.ignore()
+            return
+        
         data = self.get_mime_data(event)
         # Chech what's being moved.
-        # Reject if Document is being moved.
         # Accept if Page is being moved.
-        if re.match(r"^[a-zA-Z]+[a-zA-Z0-9_\-\ ]*", data):
-            return
+        # Reject if Document is being moved.
+    
+        # print('Item:', self.itemFromIndex(drag_move_index).text(0))
+        # print(self.itemFromIndex(drag_move_index).parent().text(0))
+        if not self.itemFromIndex(drag_move_index).parent():
+            return super().dragMoveEvent(event)
 
-        return super().dragEnterEvent(event)
+        else:
+            event.ignore()
 
     
     def dropEvent(self, event: QtGui.QDropEvent) -> None:
         data = self.get_mime_data(event)
-        # Chech what's being dropped.
-        # Reject if Document is being dropped.
-        # Accept if Page is being dropped.
+        # Chech what's the drop-destination.
+        # Accept if Drop destination is a document.
+        # Reject if Drop destination is a page.
         if re.match(r"^[a-zA-Z]+[a-zA-Z0-9_\-\ ]*", data):
+            event.ignore()
             return
 
-        # A page can only be dropped under a document.
-        # check if item has a parent.
-        # If it does, then reject
-        # Else Accept.
-        drop_index = self.indexAt(event.position().toPoint())
-        print('Item:', self.itemFromIndex(drop_index).text(0))
-        if self.itemFromIndex(drop_index).parent():
-            print('Parent:', self.itemFromIndex(drop_index).parent().text(0))
-            if self.itemFromIndex(drop_index).parent().parent():
-                print('Grandparent:', self.itemFromIndex(drop_index).parent().text(0))
 
-        if not drop_index.parent().isValid():
+        drop_index = self.indexAt(event.position().toPoint())
+        if not self.itemFromIndex(drop_index):
+            return
+        
+        print('Drop Target Item:', self.itemFromIndex(drop_index).text(0))
+        print(
+            self.check_drop_position(
+                event.position().toPoint(),
+                self.visualItemRect(self.itemFromIndex(drop_index))
+                )
+            )
+
+        if not self.itemFromIndex(drop_index).parent():
             return super().dropEvent(event)
+        else:
+            event.ignore()
 
 
 class InputListWidget(QtWidgets.QListWidget):
