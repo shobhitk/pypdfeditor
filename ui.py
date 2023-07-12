@@ -8,16 +8,20 @@ import pypdf
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 
+ON_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
+ABOVE_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
+BELOW_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
+
 class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, text, *args):
         super(OutputTreeWidgetItem, self).__init__(*args)
         self.setText(0, text)
         if self.parent():
             self.setFlags(self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled |
-                          ~QtCore.Qt.ItemFlag.ItemIsDropEnabled)
+                          ~QtCore.Qt.ItemFlag.ItemIsDropEnabled & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         else:
             self.setFlags(self.flags() & ~QtCore.Qt.ItemFlag.ItemIsDragEnabled |
-                          QtCore.Qt.ItemFlag.ItemIsDropEnabled)
+                          QtCore.Qt.ItemFlag.ItemIsDropEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
         
 
 class OutputTreeWidget(QtWidgets.QTreeWidget):
@@ -37,73 +41,48 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         source_item.dropMimeData(
             data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex())
         return source_item.item(0, 0).text()
-    
 
     def check_drop_position(self, pos, rect):
         indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnViewport
         if not self.dragDropOverwriteMode():
             margin = int(max(2, min(rect.height() / 5.5, 12)))
             if pos.y() - rect.top() < margin:
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
+                indicator = ABOVE_ITEM
             elif rect.bottom() - pos.y() < margin:
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
+                indicator = BELOW_ITEM
             elif rect.contains(pos, True):
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
+                indicator = ON_ITEM
         else:
             touching = rect.adjust(-1, -1, 1, 1)
             if touching.contains(pos.toPoint(), False):
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
-        if (indicator == QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem):
-            if pos.y() < rect.center().y():
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
-            else:
-                indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
+                indicator = ON_ITEM
         return indicator
-
-    def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
-        drag_move_index = self.indexAt(event.position().toPoint())
-        if not self.itemFromIndex(drag_move_index):
-            event.ignore()
-            return
-        
-        data = self.get_mime_data(event)
-        # Chech what's being moved.
-        # Accept if Page is being moved.
-        # Reject if Document is being moved.
-    
-        # print('Item:', self.itemFromIndex(drag_move_index).text(0))
-        # print(self.itemFromIndex(drag_move_index).parent().text(0))
-        if not self.itemFromIndex(drag_move_index).parent():
-            return super().dragMoveEvent(event)
-
-        else:
-            event.ignore()
 
     
     def dropEvent(self, event: QtGui.QDropEvent) -> None:
-        data = self.get_mime_data(event)
         # Chech what's the drop-destination.
         # Accept if Drop destination is a document.
         # Reject if Drop destination is a page.
-        if re.match(r"^[a-zA-Z]+[a-zA-Z0-9_\-\ ]*", data):
-            event.ignore()
-            return
-
-
         drop_index = self.indexAt(event.position().toPoint())
         if not self.itemFromIndex(drop_index):
             return
         
         print('Drop Target Item:', self.itemFromIndex(drop_index).text(0))
-        print(
-            self.check_drop_position(
+        drop_position = self.check_drop_position(
                 event.position().toPoint(),
                 self.visualItemRect(self.itemFromIndex(drop_index))
                 )
-            )
 
-        if not self.itemFromIndex(drop_index).parent():
+        print(drop_position)
+        
+        if not self.itemFromIndex(drop_index).parent() and \
+            drop_position == ON_ITEM :
             return super().dropEvent(event)
+
+        elif self.itemFromIndex(drop_index).parent() and \
+            drop_position in [ABOVE_ITEM, BELOW_ITEM]:
+            return super().dropEvent(event)
+
         else:
             event.ignore()
 

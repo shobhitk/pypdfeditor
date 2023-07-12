@@ -155,7 +155,7 @@ class Ui_pypdfeditor(object):
 "    background: #3d3d3d;\n"
 "}\n"
 "\n"
-"QPushButton#addFolderButton {\n"
+"QPushButton {\n"
 "    border: 1px solid #2a2a2a;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -164,24 +164,24 @@ class Ui_pypdfeditor(object):
 "    height: 12px;\n"
 "}\n"
 "\n"
-"/*QPushButton:!enabled#addFolderButton {\n"
+"/*QPushButton:!enabled {\n"
 "    border : 1px solid #3c5176;\n"
 "}*/\n"
 "\n"
-"QPushButton:hover#addFolderButton {\n"
+"QPushButton:hover {\n"
 "    border : 2px solid #48628e;\n"
 "    padding: 0px;\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
-"QPushButton:pressed#addFolderButton {\n"
+"QPushButton:pressed {\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
 "\n"
-"QPushButton#addButton {\n"
+"QPushButton {\n"
 "    border: 1px solid #2a2a2a;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -190,25 +190,25 @@ class Ui_pypdfeditor(object):
 "    height: 12px;\n"
 "}\n"
 "\n"
-"/*QPushButton:!enabled#addButton {\n"
+"/*QPushButton:!enabled {\n"
 "    border : 1px solid #3c5176;\n"
 "}*/\n"
 "\n"
-"QPushButton:hover#addButton {\n"
+"QPushButton:hover {\n"
 "    border : 2px solid #48628e;\n"
 "    padding: 0px;\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
-"QPushButton:pressed#addButton {\n"
+"QPushButton:pressed {\n"
 "    background: #3d3d3d;\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
 "\n"
-"QPushButton#removeButton {\n"
+"QPushButton {\n"
 "    border: 1px solid #2a2a2a;\n"
 "    border-radius: 3px;\n"
 "    padding: 5px;\n"
@@ -217,20 +217,20 @@ class Ui_pypdfeditor(object):
 "    height: 12px;\n"
 "}\n"
 "\n"
-"QPushButton:!enabled#removeButton {\n"
+"QPushButton:!enabled {\n"
 "    border : 1px solid #3c5176;\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
-"QPushButton:hover#removeButton {\n"
+"QPushButton:hover {\n"
 "    border : 2px solid #48628e;\n"
 "    padding: 0px;\n"
 "    width: 12px;\n"
 "    height: 12px;\n"
 "}\n"
 "\n"
-"QPushButton:pressed#removeButton {\n"
+"QPushButton:pressed {\n"
 "    background: #3d3d3d;\n"
 "}\n"
 "\n"
@@ -294,13 +294,13 @@ class Ui_pypdfeditor(object):
 "border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);\n"
 "}\n"
 "\n"
-"QTextEdit#publishNotes:focus\n"
+"QTextEdit:focus\n"
 "{\n"
 "    border: 2px solid #48628e;\n"
 "}\n"
 "\n"
 "\n"
-"QTextEdit#publishNotes\n"
+"QTextEdit\n"
 "{\n"
 "    border: 2px solid rgb(96,96,96);\n"
 "    background-color: #242424;\n"
@@ -693,7 +693,7 @@ class Ui_pypdfeditor(object):
 "    color: transparent ;\n"
 "}\n"
 "\n"
-"QToolButton#addButton \n"
+"QToolButton \n"
 "{\n"
 "    border: 1px solid #2a2a2a;\n"
 "    border-radius: 3px;\n"
@@ -742,28 +742,28 @@ class Ui_pypdfeditor(object):
 "    background-color: #6187ac;\n"
 "}\n"
 "\n"
-"QPushButton#ego_centric_mode_button {\n"
+"QPushButton {\n"
 "    background: transparent;\n"
 "    border: none;\n"
 "    width: 22;\n"
 "    height: 22;\n"
 "}\n"
 "\n"
-"QPushButton:hover#ego_centric_mode_button {\n"
+"QPushButton:hover {\n"
 "    background: transparent;\n"
 "    border: none;\n"
 "    width: 22;\n"
 "    height: 22;\n"
 "}\n"
 "\n"
-"QPushButton:checked#ego_centric_mode_button {\n"
+"QPushButton:checked {\n"
 "    background: transparent;\n"
 "    border: none;\n"
 "    width: 22;\n"
 "    height: 22;\n"
 "}\n"
 "\n"
-"QPushButton#ego_centric_mode_button {\n"
+"QPushButton {\n"
 "    background: transparent;\n"
 "    border: none;\n"
 "    width: 22;\n"
@@ -779,6 +779,7 @@ class Ui_pypdfeditor(object):
 "\n"
 "/*QTreeWidget::item {\n"
 "    border: 1px solid #8f8f8f;\n"
+"    padding: 25px;\n"     
 "    max-height: 24px;\n"
 "}\n"
 "\n"
@@ -790,31 +791,13 @@ class Ui_pypdfeditor(object):
 "    color: #ececec;\n"
 "    background: #303c50;\n"
 "}*/\n"
-"\n"
-"QTreeWidget::branch:has-children:!has-siblings:closed,\n"
-"QTreeWidget::branch:closed:has-children:has-siblings {\n"
-"    border-image: none;\n"
-"}\n"
-"\n"
-"QTreeWidget::branch:has-children:!has-siblings:closed:hover,\n"
-"QTreeWidget::branch:closed:has-children:has-siblings:hover {\n"
-"}\n"
-"\n"
-"QTreeWidget::branch:open:has-children:!has-siblings,\n"
-"QTreeWidget::branch:open:has-children:has-siblings  {\n"
-"}\n"
-"\n"
-"QTreeWidget::branch:open:has-children:!has-siblings:hover,\n"
-"QTreeWidget::branch:open:has-children:has-siblings:hover  {\n"
-"}\n"
-"\n"
-"QFrame#compFrame {\n"
+"QFrame {\n"
 "    background-color: #151515;\n"
 "    /*border: 1px solid #4f4f4f;*/\n"
 "    /*border-radius: 3px;*/\n"
 "}\n"
 "\n"
-"QFrame#uiFrame {\n"
+"QFrame {\n"
 "    border: 1px solid #4f4f4f;\n"
 "    border-radius: 3px;\n"
 "}\n"
@@ -827,12 +810,6 @@ class Ui_pypdfeditor(object):
         self.main_layout = QtWidgets.QGridLayout()
         self.main_layout.setSpacing(3)
         self.main_layout.setObjectName("main_layout")
-<<<<<<< HEAD
-        self.file_widget = QtWidgets.QListWidget(parent=pypdfeditor)
-        self.file_widget.setObjectName("file_widget")
-        self.main_layout.addWidget(self.file_widget, 0, 0, 1, 1)
-=======
->>>>>>> 9a215d341ce55ce0b424daaee3ef62e901ec4db0
         self.output_frame = QtWidgets.QFrame(parent=pypdfeditor)
         self.output_frame.setMinimumSize(QtCore.QSize(600, 0))
         self.output_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -872,32 +849,6 @@ class Ui_pypdfeditor(object):
         self.button_layout.setStretch(0, 1)
         self.button_layout.setStretch(1, 1)
         self.output_layout.addWidget(self.button_frame)
-<<<<<<< HEAD
-        self.main_layout.addWidget(self.output_frame, 0, 1, 1, 1)
-        self.generate_widget = QtWidgets.QFrame(parent=pypdfeditor)
-        self.generate_widget.setMinimumSize(QtCore.QSize(0, 0))
-        self.generate_widget.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.generate_widget.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
-        self.generate_widget.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.generate_widget.setObjectName("generate_widget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.generate_widget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setSpacing(3)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.output_label = QtWidgets.QLabel(parent=self.generate_widget)
-        self.output_label.setObjectName("output_label")
-        self.horizontalLayout.addWidget(self.output_label)
-        self.output_path = QtWidgets.QLineEdit(parent=self.generate_widget)
-        self.output_path.setObjectName("output_path")
-        self.horizontalLayout.addWidget(self.output_path)
-        self.generate_button = QtWidgets.QPushButton(parent=self.generate_widget)
-        self.generate_button.setObjectName("generate_button")
-        self.horizontalLayout.addWidget(self.generate_button)
-        self.cancel_button = QtWidgets.QPushButton(parent=self.generate_widget)
-        self.cancel_button.setObjectName("cancel_button")
-        self.horizontalLayout.addWidget(self.cancel_button)
-        self.main_layout.addWidget(self.generate_widget, 1, 0, 1, 2)
-=======
         self.main_layout.addWidget(self.output_frame, 1, 1, 1, 1)
         self.generate_frame = QtWidgets.QFrame(parent=pypdfeditor)
         self.generate_frame.setMinimumSize(QtCore.QSize(0, 0))
@@ -932,7 +883,6 @@ class Ui_pypdfeditor(object):
         self.verticalLayout_2.setSpacing(3)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.main_layout.addWidget(self.input_frame, 1, 0, 1, 1)
->>>>>>> 9a215d341ce55ce0b424daaee3ef62e901ec4db0
         self.gridLayout.addLayout(self.main_layout, 0, 0, 1, 1)
 
         self.retranslateUi(pypdfeditor)
