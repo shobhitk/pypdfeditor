@@ -42,7 +42,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex())
         return source_item.item(0, 0).text()
 
-    def check_drop_position(self, pos, rect):
+    def check_position(self, pos, rect):
         indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnViewport
         if not self.dragDropOverwriteMode():
             margin = int(max(2, min(rect.height() / 5.5, 12)))
@@ -59,32 +59,42 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         return indicator
 
     
+    def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
+        drag_index = self.indexAt(event.position().toPoint())
+        drag_item = self.itemFromIndex(drag_index)
+        drag_position = self.check_position(
+                event.position().toPoint(),
+                self.visualItemRect(self.itemFromIndex(drag_index))
+                )
+
+        if (drag_position == ON_ITEM and drag_item.parent()) or \
+            (drag_position in [ABOVE_ITEM, BELOW_ITEM] and not drag_item.parent()):
+            event.ignore()
+
+        else:
+            super().dragMoveEvent(event)
+
+    
     def dropEvent(self, event: QtGui.QDropEvent) -> None:
         # Chech what's the drop-destination.
         # Accept if Drop destination is a document.
         # Reject if Drop destination is a page.
         drop_index = self.indexAt(event.position().toPoint())
-        if not self.itemFromIndex(drop_index):
+        drop_target_item = self.itemFromIndex(drop_index)
+        if not drop_target_item:
             return
         
-        print('Drop Target Item:', self.itemFromIndex(drop_index).text(0))
-        drop_position = self.check_drop_position(
+        drop_position = self.check_position(
                 event.position().toPoint(),
-                self.visualItemRect(self.itemFromIndex(drop_index))
+                self.visualItemRect(drop_target_item)
                 )
-
-        print(drop_position)
         
-        if not self.itemFromIndex(drop_index).parent() and \
-            drop_position == ON_ITEM :
-            return super().dropEvent(event)
-
-        elif self.itemFromIndex(drop_index).parent() and \
-            drop_position in [ABOVE_ITEM, BELOW_ITEM]:
-            return super().dropEvent(event)
+        if (drop_position == ON_ITEM and drop_target_item.parent()) or \
+            (drop_position in [ABOVE_ITEM, BELOW_ITEM] and not drop_target_item.parent()):
+            event.ignore()
 
         else:
-            event.ignore()
+            super().dropEvent(event)
 
 
 class InputListWidget(QtWidgets.QListWidget):
