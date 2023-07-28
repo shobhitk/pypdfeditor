@@ -851,7 +851,7 @@ QFrame#uiFrame {
       <widget class="QFrame" name="output_frame">
        <property name="minimumSize">
         <size>
-         <width>600</width>
+         <width>400</width>
          <height>0</height>
         </size>
        </property>
@@ -1014,7 +1014,7 @@ QFrame#uiFrame {
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="output_path">
+         <widget class="QLineEdit" name="output_line_edit">
           <property name="text">
            <string>Folder for generated files</string>
           </property>
@@ -1041,7 +1041,7 @@ QFrame#uiFrame {
       <widget class="QFrame" name="input_frame">
        <property name="minimumSize">
         <size>
-         <width>30</width>
+         <width>150</width>
          <height>30</height>
         </size>
        </property>
@@ -1071,6 +1071,17 @@ QFrame#uiFrame {
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="0" column="1">
+    <widget class="QFrame" name="pdf_view_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3"/>
+    </widget>
    </item>
   </layout>
  </widget>

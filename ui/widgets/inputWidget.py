@@ -1,11 +1,7 @@
 # # This Python file uses the following encoding: utf-8
 import os
-import re
-from pathlib import Path
-import sys
 
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
-import pypdf
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
 class InputWidget(QtWidgets.QListWidget):
     files_added = QtCore.pyqtSignal(list)
@@ -23,7 +19,6 @@ class InputWidget(QtWidgets.QListWidget):
             event.accept()
         else:
             super().dragEnterEvent(event)
-
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
         if event.mimeData().hasUrls():
             event.accept()
@@ -48,4 +43,4 @@ class InputWidget(QtWidgets.QListWidget):
 
         self.file_list.extend(file_list)
         self.file_list = list(set(self.file_list))
-        self.files_added.emit(self.file_list)
+        self.files_added.emit(file_list)
