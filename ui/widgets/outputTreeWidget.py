@@ -130,16 +130,27 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         document_dict = {"output_dir": output_dir}
         for doc_index in range(root.childCount()):
             document_item = root.child(doc_index)
-            page_dict = {}
+            page_list = []
             page_count = document_item.childCount()
             if not page_count:
                 continue
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_dict[page_index] = {page_item.page: page_item.document}
+                page_list.append((page_item.page, page_item.document))
 
-            document_dict[document_item.text(0)] = page_dict
+            document_dict[document_item.text(0)] = page_list
+        # Another implementation:
+        #     page_dict = {}
+        #     page_count = document_item.childCount()
+        #     if not page_count:
+        #         continue
+
+        #     for page_index in range(page_count):
+        #         page_item = document_item.child(page_index)
+        #         page_dict[page_index + 1] = (page_item.page: page_item.document)
+
+        #     document_dict[document_item.text(0)] = page_dict
         
         return document_dict
 
