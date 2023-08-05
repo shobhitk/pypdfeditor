@@ -1,7 +1,5 @@
 # # This Python file uses the following encoding: utf-8
 import os
-import re
-from pathlib import Path
 import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
@@ -13,7 +11,6 @@ BELOW_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
 class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, text, document, page=0, *args):
         super(OutputTreeWidgetItem, self).__init__(*args)
-        self.setText(0, text)
         if self.parent():
             self.setFlags(self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled |
                           ~QtCore.Qt.ItemFlag.ItemIsDropEnabled & ~QtCore.Qt.ItemFlag.ItemIsEditable)
@@ -21,6 +18,7 @@ class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
             self.setFlags(self.flags() & ~QtCore.Qt.ItemFlag.ItemIsDragEnabled |
                           QtCore.Qt.ItemFlag.ItemIsDropEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
             
+        self.setText(0, text)
         self.document = document
         self.page = page
         self.setExpanded(True)
@@ -38,8 +36,10 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         self.setDragDropMode(
             QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
         
-        self.pdf_engine = parent.pdf_engine
+        if parent:
+            self.pdf_engine = parent.pdf_engine
         
+        self.itemDoubleClicked.connect(self.clear_text)
         self.itemClicked.connect(self.emit_page_selected)
 
     def get_mime_data(self, event):
@@ -109,13 +109,19 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         self.page_selected.emit(item.document, item.page)
 
 
+    def clear_text(self, item):
+        if item.page == 0:
+            print(self.state())
+            item.setText(0, "")
+
+
     def add_documents(self, documents):
         for document in documents:
             pages = self.pdf_engine.get_pdf_pages(document)
 
             # TO DO: Maybe make this a helper function
             doc_base = os.path.basename(document).split(".")[0]
-            doc_item = OutputTreeWidgetItem(doc_base, document, self)
+            doc_item = OutputTreeWidgetItem(doc_base, document, 0, self)
             for page_num in range(len(pages)):
                 page_name = "{0}->{1}".format(page_num + 1, doc_base)
                 page_item = OutputTreeWidgetItem(
@@ -154,3 +160,38 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         
         return document_dict
 
+
+# TEST CASE
+# class TestWindow(QtWidgets.QDialog):
+#     def __init__(self):
+#         super().__init__()
+#         self.setLayout(QtWidgets.QvBoxLayout())
+#         self.output_tree_widget = OutputTreeWidget()
+#         test_item1 = OutputTreeWidgetItem(
+#             "Doc1", "Doc1", 0,  self.output_tree_widget)
+#         test_item1_1 = OutputTreeWidgetItem(
+#             "page1-doc1", "page1", 1, test_item1)
+#         test_item1_2 = OutputTreeWidgetItem(
+#             "page2-doc1", "page2", 0, test_item1)
+#         test_item2 = OutputTreeWidgetItem("Doc2", "Doc2", 0, self.output_tree_widget)
+#         test_item2_1 = OutputTreeWidgetItem(
+#             "page1-doc2", "page1", 0, test_item2)
+#         test_item2_2 = OutputTreeWidgetItem(
+#             "page2-doc2", "page2", 0, test_item2)
+#         self.output_tree_widget.addTopLevelItems([test_item1, test_item2])
+#         self.layout().addWidget(self.output_tree_widget)
+#         self.gen_button = QtWidgets.QPushButton("Gen")
+#         self.gen_button.clicked.connect(self.print_test)
+#         self.layout().addWidget(self.gen_button)
+#         self.show()
+
+#     def print_test(self):
+#         from pprint import pprint
+#         pprint(self.output_tree_widget.return_documents_dict())
+
+
+# if __name__ == "__main__":
+#     app = QtWidgets.QApplication([])
+#     widget = TestWindow()
+#     widget.show()
+#     sys.exit(app.exec())

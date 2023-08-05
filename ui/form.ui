@@ -9,9 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>882</width>
-    <height>288</height>
+    <width>1500</width>
+    <height>625</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1500</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>pypdfeditor</string>
@@ -56,12 +62,6 @@ QListWidget:item:selected
     border: 2px solid rgb(255,255,255);
 
 }
-
-QTableWidget::item:hover
-{
-    color: #48628e;
-}
-
 
 QWidget:item
 {
@@ -136,16 +136,6 @@ QPushButton {
     min-height: 12px;
 }
 
-QTableView
-{
-    alternate-background-color: '#2a2b2c';
-    background-color: transparent;
-    border: 0px;
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* font-weight: bold; */
-}
-
 QPushButton:default {
     border : 1px solid #3c5176;
 }
@@ -157,85 +147,6 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background: #3d3d3d;
-}
-
-QPushButton#addFolderButton {
-    border: 1px solid #2a2a2a;
-    border-radius: 3px;
-    padding: 5px;
-    background: #292929;
-    width: 12px;
-    height: 12px;
-}
-
-/*QPushButton:!enabled#addFolderButton {
-    border : 1px solid #3c5176;
-}*/
-
-QPushButton:hover#addFolderButton {
-    border : 2px solid #48628e;
-    padding: 0px;
-    width: 12px;
-    height: 12px;
-}
-
-QPushButton:pressed#addFolderButton {
-    width: 12px;
-    height: 12px;
-}
-
-
-QPushButton#addButton {
-    border: 1px solid #2a2a2a;
-    border-radius: 3px;
-    padding: 5px;
-    background: #292929;
-    width: 12px;
-    height: 12px;
-}
-
-/*QPushButton:!enabled#addButton {
-    border : 1px solid #3c5176;
-}*/
-
-QPushButton:hover#addButton {
-    border : 2px solid #48628e;
-    padding: 0px;
-    width: 12px;
-    height: 12px;
-}
-
-QPushButton:pressed#addButton {
-    background: #3d3d3d;
-    width: 12px;
-    height: 12px;
-}
-
-
-QPushButton#removeButton {
-    border: 1px solid #2a2a2a;
-    border-radius: 3px;
-    padding: 5px;
-    background: #292929;
-    width: 12px;
-    height: 12px;
-}
-
-QPushButton:!enabled#removeButton {
-    border : 1px solid #3c5176;
-    width: 12px;
-    height: 12px;
-}
-
-QPushButton:hover#removeButton {
-    border : 2px solid #48628e;
-    padding: 0px;
-    width: 12px;
-    height: 12px;
-}
-
-QPushButton:pressed#removeButton {
     background: #3d3d3d;
 }
 
@@ -251,12 +162,6 @@ QComboBox:item
     border-style: solid;
     border: 1px solid #1e1e1e;
     border-radius: 2;
-}
-
-QListView
-{
-    outline: 0;
-    background-color: #2D2D2D;
 }
 
 QComboBox:hover
@@ -327,65 +232,6 @@ QHeaderView::section
     border-bottom: 0px;
 }
 
-
-QSpinBox
-{
-    background-color: transparent;
-    border: 1px solid #1e1e1e;
-}
-
-QDockWidget::title
-{
-    text-align: center;
-    spacing: 0px; /* spacing between items in the tool bar */
-    border: 1px solid #242424;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    background-color: #2b2b2b;
-}
-
-QDockWidget::close-button, QDockWidget::float-button
-{
-    spacing: 0px; /* spacing between items in the tool bar */
-    background-color:  transparent;
-}
-
-
-
-QDockWidget::close-button:hover, QDockWidget::float-button:hover
-{
-    border: 1px;
-    border-color: #0099ff;
-}
-
-QTabBar::tab {
-    color: #111111;
-    border:0;
-    background-color: #111111;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 3px;
-    padding-bottom: 2px;
-    margin-right: 0px;
-    font-size:10pt;
-    height: 18px;
-    min-width: 102;
-}
-
-QTabBar::tab:selected
-{
-    border-bottom: 2px solid qlineargradient(
-    	x1:0     y1:0,
-    	x2:1     y2:0,
-    	stop:0   transparent,
-    	stop:.1  transparent,
-    	stop:.11 #48628e,
-    	stop:.9  #48628e,
-    	stop:.91 transparent,
-    	stop:1   transparent
-    	);
-}
-
 QMainWindow::separator
 {
     background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #161616, stop: 0.5 #151515, stop: 0.6 #212121, stop:1 #343434);
@@ -429,65 +275,6 @@ QProgressBar::chunk
     background-color: #48628e;
     width: 2.15px;
     margin: 0px;
-}
-
-QTabBar::tab {
-    color: #b1b1b1;
-    border: 1px solid #444;
-    border-bottom: 0px;
-    border-bottom-style: none;
-    background-color: #323232;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 3px;
-    padding-bottom: 2px;
-    margin-right: -1px;
-}
-
-QTabWidget::pane {
-    border: 1px solid #444;
-    top: 1px;
-}
-
-QTabWidget::tab-bar {
-    left: 1;
-}
-
-QTabBar::tab:last
-{
-    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
-    border-top-right-radius: 3px;
-}
-
-QTabBar::tab:first:!selected
-{
-    margin-left: 0px; /* the last selected tab has nothing to overlap with on the right */
-    border-top-left-radius: 3px;
-}
-
-QTabBar::tab:!selected
-{
-    color: #b1b1b1;
-    border-bottom-style: solid;
-    margin-top: 3px;
-    margin-bottom: 0px;
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #212121, stop:.4 #343434);
-}
-
-QTabBar::tab:selected
-{
-    color: #f9f9f9;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    margin-bottom: 0px;
-}
-
-QTabBar::tab:!selected:hover
-{
-    border-top: 2px solid #48628e;
-    padding-bottom: 2px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
 }
 
 QRadioButton{
@@ -673,20 +460,6 @@ QListWidget
     padding: 0px;
 }
 
-QTableWidget
-{
-    background-color: #242424;
-    alternate-background-color: #2c2c2c;
-    border: 0px solid #3A3939;
-    selection-background-color: grey;
-}
-
-QTableView
-{
-    background-color: rgb(36,36,36);
-    outline: 0;
-}
-
 QListWidget::item
 {
     background-color: transparent;
@@ -842,134 +615,50 @@ QFrame#uiFrame {
    <property name="spacing">
     <number>3</number>
    </property>
-   <item row="0" column="0">
+   <item row="0" column="2">
+    <widget class="QFrame" name="pdf_view_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="leftMargin">
+       <number>3</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="rightMargin">
+       <number>3</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
+      </property>
+      <property name="spacing">
+       <number>3</number>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
     <layout class="QGridLayout" name="main_layout">
+     <property name="leftMargin">
+      <number>3</number>
+     </property>
+     <property name="topMargin">
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>3</number>
+     </property>
+     <property name="bottomMargin">
+      <number>3</number>
+     </property>
      <property name="spacing">
       <number>3</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QFrame" name="output_frame">
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QHBoxLayout" name="output_layout" stretch="0,0">
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QFrame" name="output_tree_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <property name="spacing">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="button_frame">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="button_layout" stretch="1,1,0">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="add_doc_button">
-             <property name="text">
-              <string>Add</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="remove_doc_button">
-             <property name="text">
-              <string>Rem</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="button_spacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item row="2" column="0" colspan="2">
       <widget class="QFrame" name="generate_frame">
        <property name="minimumSize">
@@ -1021,67 +710,220 @@ QFrame#uiFrame {
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="browse_button">
+          <property name="text">
+           <string>Browse</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="generate_button">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
           <property name="text">
            <string>Generate</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="cancel_button">
+         <widget class="QPushButton" name="close_button">
           <property name="text">
-           <string>Cancel</string>
+           <string>Close</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QFrame" name="input_frame">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>30</height>
-        </size>
-       </property>
+     <item row="0" column="0">
+      <widget class="QFrame" name="top_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>3</number>
+       <widget class="QFrame" name="input_frame">
+        <property name="geometry">
+         <rect>
+          <x>37</x>
+          <y>9</y>
+          <width>200</width>
+          <height>96</height>
+         </rect>
         </property>
-        <property name="leftMargin">
-         <number>0</number>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
-        <property name="rightMargin">
-         <number>0</number>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
-        <property name="bottomMargin">
-         <number>0</number>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="button_frame">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="button_layout" stretch="1,1,0">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="add_doc_button">
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="remove_doc_button">
+              <property name="text">
+               <string>Rem</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="button_spacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QFrame" name="output_frame">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>400</width>
+          <height>96</height>
+         </rect>
         </property>
-       </layout>
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="output_layout" stretch="0">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="output_tree_frame">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="QFrame" name="pdf_view_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3"/>
-    </widget>
    </item>
   </layout>
  </widget>

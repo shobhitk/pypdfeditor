@@ -10,18 +10,16 @@ class PdfEngine():
         pdf_read_obj = pypdf.PdfReader(document)
         pages = pdf_read_obj.pages
         return pages
-    
-    def write_pdf(self, pdf_dict):
-        pdf_write_obj = pypdf.PdfWriter()
-        pass
+
 
     def get_pdf_url(self, pdf_file, page=1):
         # <A HREF="file:////www.example.com/myfile.pdf#page=4">
         return "file:////{0}#page={1}".format(pdf_file, page)
+
     
     def generate_pdfs(self, pdf_dict):
-        output_dir = "C:\\GitHub\\"
-        # output_dir = pdf_dict['output_dir']
+        output_dir = pdf_dict['output_dir']
+        out_paths = []
         for doc_key, doc_val in pdf_dict.items():
             pdf_write_obj = pypdf.PdfWriter()
             if doc_key == "output_dir":
@@ -33,10 +31,14 @@ class PdfEngine():
                 pdf_write_obj.append(
                     fileobj=input_doc, pages=(input_page-1, input_page ))
             
-            output = open(os.path.join(output_dir, doc_key + ".pdf"), "wb")
+            out_path = os.path.join(output_dir, doc_key + ".pdf")
+            output = open(out_path, "wb")
             pdf_write_obj.write(output)
             pdf_write_obj.close()
             output.close()
+            out_paths.append(out_path)
+        
+        return out_paths
 
 
 # test
