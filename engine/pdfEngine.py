@@ -1,4 +1,5 @@
 import os
+import json
 import pypdf
 from pprint import pprint
 
@@ -15,21 +16,33 @@ class PdfEngine():
     def get_pdf_url(self, pdf_file, page=1):
         # <A HREF="file:////www.example.com/myfile.pdf#page=4">
         return "file:////{0}#page={1}".format(pdf_file, page)
+    
+# {
+#     "output_folder": "output",
+#     "doc_1.pdf": {
+#         "1": {"1": "a/b/doc_1.pdf"},
+#         "2": {"1": "b/c/doc_2.pdf"}
+#     },
+#     "doc_2.pdf": {
+#         "1": {"3": "a/b/doc_1.pdf"},
+#         "2": {"4": "b/c/doc_2.pdf"}
+#     }
+# }
 
     
     def generate_pdfs(self, pdf_dict):
-        output_dir = pdf_dict['output_dir']
+        output_dir = pdf_dict["output_dir"]
         out_paths = []
         for doc_key, doc_val in pdf_dict.items():
             pdf_write_obj = pypdf.PdfWriter()
             if doc_key == "output_dir":
                 continue
             
-            for index in range(len(doc_val)):
-                input_page = doc_val[index][0]
-                input_doc = open(doc_val[index][1], "rb")
+            for page_key, page_val in doc_val.items():
+                input_page = next(iter(page_val))
+                input_doc = open(page_val[input_page], "rb")
                 pdf_write_obj.append(
-                    fileobj=input_doc, pages=(input_page-1, input_page ))
+                    fileobj=input_doc, pages=(page_key-1, page_key))
             
             out_path = os.path.join(output_dir, doc_key + ".pdf")
             output = open(out_path, "wb")

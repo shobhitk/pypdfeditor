@@ -16,13 +16,16 @@ class WebPage(QtWebEngineWidgets.QWebEnginePage):
     def javaScriptConsoleMessage(self, *args):
         pass
 
-class PyPdfEditor(QtWidgets.QDialog):
+class PyPdfEditor(QtWidgets.QMainWindow):
+
     def __init__(self):
         super().__init__()
         path = os.fspath(Path(__file__).resolve().parent / "form.ui")
         uic.loadUi(path, self)
-        self.top_frame.setLayout(QtWidgets.QGridLayout())
-        self.top_frame.layout().setContentsMargins(3,3,3,3)
+        self.setCentralWidget(self.main_frame)
+        self.centralWidget().layout().setContentsMargins(3,3,3,3)
+        # self.central_widget.layout().setContentsMargins(0,0,0,0)
+        # self.central_widget.layout().addWidget(self.main_frame)
         self.top_splitter = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
         self.top_splitter.addWidget(self.input_frame)
         self.top_splitter.addWidget(self.output_frame)
@@ -31,7 +34,7 @@ class PyPdfEditor(QtWidgets.QDialog):
         self.input_list_widget = InputWidget(self)
         self.input_frame.layout().addWidget(self.input_list_widget)
         self.output_tree_widget = OutputTreeWidget(self)
-        self.output_tree_frame.layout().addWidget(self.output_tree_widget, 0,0,0,0)
+        self.output_frame.layout().addWidget(self.output_tree_widget, 0,0,0,0)
         self.pdf_web_view = QtWebEngineWidgets.QWebEngineView()
         self.pdf_web_page = WebPage()
         self.pdf_web_view.setPage(self.pdf_web_page)
@@ -56,9 +59,9 @@ class PyPdfEditor(QtWidgets.QDialog):
 
     
     def make_connections(self):
-        self.input_list_widget.files_added.connect(self.populate)
+        self.input_list_widget.files_added.connect(self.populate_output)
+        self.action_add_pdfs.triggered.connect(self.add_docs)
         self.output_tree_widget.page_selected.connect(self.show_page)
-        self.add_doc_button.clicked.connect(self.add_docs)
         self.browse_button.clicked.connect(self.set_output_folder)
         self.generate_button.clicked.connect(self.generate_documents)
         self.close_button.clicked.connect(self.close)
@@ -72,20 +75,28 @@ class PyPdfEditor(QtWidgets.QDialog):
 
         self.output_line_edit.setText(result)
 
+
+    def open_setup(self):
+        setup_file, _ = QtWidgets.QFileDialog.getOpenFileName(
+            None, "Open Setup file", "", "JSON (*.json)")
+        self.populate_ui_from_file(setup_file)
+
     
     def add_docs(self):
         file_names, _ = QtWidgets.QFileDialog.getOpenFileNames(
             None, "Open files", "", "PDF (*.pdf)")
         self.input_list_widget.add_files(file_names)
 
+    def populate_ui_from_file(self, setup_file):
+        pass
 
-    def populate(self, files):
+
+    def populate_output(self, files):
         self.output_tree_widget.add_documents(files)
 
     
     def show_page(self, document, page):
         url_str = self.pdf_engine.get_pdf_url(document, page)
-        print(url_str)
         self.pdf_web_view.load(QtCore.QUrl(url_str))
 
 
@@ -130,6 +141,7 @@ class PyPdfEditor(QtWidgets.QDialog):
     def generate_documents(self):
         output_dir = self.output_line_edit.text()
         output_dict = self.output_tree_widget.return_documents_dict(output_dir)
+        # print(output_dict)
         confirm = self.confirm_output(output_dict)
         if not confirm:
             return

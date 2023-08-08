@@ -42,12 +42,21 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         self.itemDoubleClicked.connect(self.clear_text)
         self.itemClicked.connect(self.emit_page_selected)
 
+
     def get_mime_data(self, event):
         data = event.mimeData()
         source_item = QtGui.QStandardItemModel()
         source_item.dropMimeData(
             data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex())
         return source_item.item(0, 0).text()
+
+    
+    def set_stylesheet_for_position(self, position):
+        if position == ON_ITEM:
+            self.setStyleSheet("""QTreeView::item:hover { background-color: #656565;}""")
+        else:
+            self.setStyleSheet("""QTreeView::item:hover { background-color: None;}""")
+
 
     def check_position(self, pos, rect):
         indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnViewport
@@ -65,6 +74,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 indicator = ON_ITEM
         return indicator
 
+
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
         drag_index = self.indexAt(event.pos())
         drag_item = self.itemFromIndex(drag_index)
@@ -76,12 +86,15 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             self.visualItemRect(self.itemFromIndex(drag_index))
         )
 
+        self.set_stylesheet_for_position(drag_position)
+
         if (drag_position == ON_ITEM and drag_item.parent()) or \
                 (drag_position in [ABOVE_ITEM, BELOW_ITEM] and not drag_item.parent()):
             event.ignore()
 
         else:
             super().dragMoveEvent(event)
+
 
     def dropEvent(self, event: QtGui.QDropEvent) -> None:
         # Chech what's the drop-destination.
@@ -97,6 +110,8 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             self.visualItemRect(drop_target_item)
         )
 
+        self.set_stylesheet_for_position(drop_position)
+
         if (drop_position == ON_ITEM and drop_target_item.parent()) or \
                 (drop_position in [ABOVE_ITEM, BELOW_ITEM] and not drop_target_item.parent()):
             event.ignore()
@@ -105,13 +120,13 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             super().dropEvent(event)
 
 
+
     def emit_page_selected(self, item):
         self.page_selected.emit(item.document, item.page)
 
 
     def clear_text(self, item):
         if item.page == 0:
-            print(self.state())
             item.setText(0, "")
 
 
@@ -119,7 +134,6 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         for document in documents:
             pages = self.pdf_engine.get_pdf_pages(document)
 
-            # TO DO: Maybe make this a helper function
             doc_base = os.path.basename(document).split(".")[0]
             doc_item = OutputTreeWidgetItem(doc_base, document, 0, self)
             for page_num in range(len(pages)):
@@ -135,28 +149,17 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         root = self.invisibleRootItem()
         document_dict = {"output_dir": output_dir}
         for doc_index in range(root.childCount()):
+            page_dict = {}
             document_item = root.child(doc_index)
-            page_list = []
             page_count = document_item.childCount()
             if not page_count:
                 continue
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_list.append((page_item.page, page_item.document))
+                page_dict[page_index + 1] = {page_item.page: page_item.document}
 
-            document_dict[document_item.text(0)] = page_list
-        # Another implementation:
-        #     page_dict = {}
-        #     page_count = document_item.childCount()
-        #     if not page_count:
-        #         continue
-
-        #     for page_index in range(page_count):
-        #         page_item = document_item.child(page_index)
-        #         page_dict[page_index + 1] = (page_item.page: page_item.document)
-
-        #     document_dict[document_item.text(0)] = page_dict
+            document_dict[document_item.text(0)] = page_dict
         
         return document_dict
 

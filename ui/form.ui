@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>pypdfeditor</class>
- <widget class="QDialog" name="pypdfeditor">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
+ <class>PyPdfEditor</class>
+ <widget class="QMainWindow" name="PyPdfEditor">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>625</height>
+    <width>1200</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1500</width>
+    <width>1200</width>
     <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>pypdfeditor</string>
-  </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
+   <string>Pdf Editor</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QToolTip
 {
-     color: #b1b1b1;
-     border: 1px solid black;
-     background-color:rgb(42,42,42);
-     padding: 1px;
-     border-radius: 3px;
-     opacity: 190;
+    color: #b1b1b1;
+    border: 1px solid black;
+    background-color:rgb(42,42,42);
+    padding: 1px;
+    border-radius: 3px;
+    opacity: 190;
 }
 
 QWidget
@@ -113,8 +107,7 @@ QWidget:disabled
 
 QLineEdit
 {
-    /*background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #434343, stop: 1 #363636);*/
-    background-color: transparent ;
+    background-color: transparent;
     padding: 1px;
     border-style: solid;
     border: 1px solid #1e1e1e;
@@ -123,7 +116,7 @@ QLineEdit
 
 QLineEdit:!enabled {
     color: #B1B1B1;
-    background-color: transparent ;
+    background-color: transparent;
 }
 
 QPushButton {
@@ -142,7 +135,7 @@ QPushButton:default {
 
 QPushButton:hover {
     color: #FFFFFF;
-    border : 2px solid #48628e;
+    border: 2px solid #48628e;
     padding: 0px;
 }
 
@@ -193,7 +186,6 @@ QComboBox::drop-down
 
  QComboBox::down-arrow, QSpinBox::down-arrow, QTimeEdit::down-arrow, QDateEdit::down-arrow
 {
-    image: url(S:/outfit/developers/roberttomcik/FFXPipeline/FFX/universal/sceneManager/themes/icons/dropdown-arrow.png);
     width: 16px;
     height: 14px;
 }
@@ -208,15 +200,6 @@ QTextEdit#publishNotes:focus
 {
     border: 2px solid #48628e;
 }
-
-
-QTextEdit#publishNotes
-{
-    border: 2px solid rgb(96,96,96);
-    background-color: #242424;
-}
-
-
 
 QPlainTextEdit
 {
@@ -277,28 +260,6 @@ QProgressBar::chunk
     margin: 0px;
 }
 
-QRadioButton{
-    background-color: transparent;
-}
-
-QRadioButton::indicator:checked, QRadioButton::indicator:unchecked{
-    color: #b1b1b1;
-    background-color: rgba(50,50,50,0);
-    border: 1px solid #48628e;
-    border-radius: 6px;
-}
-
-QRadioButton::indicator:checked
-{
-    background-color: qradialgradient(
-        cx: 0.5, cy: 0.5,
-        fx: 0.5, fy: 0.5,
-        radius: 1.0,
-        stop: 0.25 #48628e,
-        stop: 0.3 #323232
-    );
-}
-
 QCheckBox
 {
     color: rgb(240,240,240)
@@ -341,7 +302,6 @@ QScrollBar::handle:horizontal
 
 QScrollBar::add-line:horizontal
 {
-    border-image: url(:/qss_icons/rc/right_arrow_disabled.png);
     width: 10px;
     height: 10px;
     subcontrol-position: right;
@@ -350,7 +310,6 @@ QScrollBar::add-line:horizontal
 
 QScrollBar::sub-line:horizontal
 {
-    border-image: url(:/qss_icons/rc/left_arrow_disabled.png);
     height: 10px;
     width: 10px;
     subcontrol-position: left;
@@ -359,7 +318,6 @@ QScrollBar::sub-line:horizontal
 
 QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:on
 {
-    border-image: url(:/qss_icons/rc/right_arrow.png);
     height: 10px;
     width: 10px;
     subcontrol-position: right;
@@ -369,7 +327,6 @@ QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:on
 
 QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:on
 {
-    border-image: url(:/qss_icons/rc/left_arrow.png);
     height: 10px;
     width: 10px;
     subcontrol-position: left;
@@ -405,7 +362,6 @@ QScrollBar::handle:vertical
 
 QScrollBar::sub-line:vertical
 {
-    border-image: url(:/qss_icons/rc/up_arrow_disabled.png);
     height: 10px;
     width: 10px;
     subcontrol-position: top;
@@ -415,7 +371,6 @@ QScrollBar::sub-line:vertical
 QScrollBar::add-line:vertical
 {
 
-    border-image: url(:/qss_icons/rc/down_arrow_disabled.png);
     height: 10px;
     width: 10px;
     subcontrol-position: bottom;
@@ -425,7 +380,6 @@ QScrollBar::add-line:vertical
 QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
 {
 
-    border-image: url(:/qss_icons/rc/up_arrow.png);
     height: 10px;
     width: 10px;
     subcontrol-position: top;
@@ -435,7 +389,6 @@ QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
 
 QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
 {
-    border-image: url(:/qss_icons/rc/down_arrow.png);
     height: 10px;
     width: 10px;
     subcontrol-position: bottom;
@@ -471,42 +424,9 @@ QToolBar
     color: transparent ;
 }
 
-QToolButton#addButton 
-{
-    border: 1px solid #2a2a2a;
-    border-radius: 3px;
-    padding: 5px;
-    background: #292929;
-    width: 12px;
-    height: 12px;
-}
-
 QToolButton:hover
 {
     color: #5d81bd;
-}
-
-QToolButton::menu-indicator
-{
-    image: none;
-}
-
-QSlider {
-    background-color: transparent;
-}
-
-QSlider::groove:horizontal {
-    border: 0px;
-    height: 2px;
-    background: #6b6b6b;
-    margin: 2px 0;
-}
-
-QSlider::handle:horizontal {
-    background: #d0d0d0;
-    width: 8px;
-    margin: -3px 0;
-    border-radius: 4px;
 }
 
 QSplitter::handle {
@@ -520,34 +440,6 @@ QSplitter::handle:pressed {
     background-color: #6187ac;
 }
 
-QPushButton#ego_centric_mode_button {
-    background: transparent;
-    border: none;
-    width: 22;
-    height: 22;
-}
-
-QPushButton:hover#ego_centric_mode_button {
-    background: transparent;
-    border: none;
-    width: 22;
-    height: 22;
-}
-
-QPushButton:checked#ego_centric_mode_button {
-    background: transparent;
-    border: none;
-    width: 22;
-    height: 22;
-}
-
-QPushButton#ego_centric_mode_button {
-    background: transparent;
-    border: none;
-    width: 22;
-    height: 22;
-}
-
 QTreeWidget
 {
     background-color: #151515;
@@ -555,111 +447,44 @@ QTreeWidget
     border: 0px;
 }
 
-/*QTreeWidget::item {
-    border: 1px solid #8f8f8f;
-    max-height: 24px;
-}
-
 QTreeWidget::item:hover {
-    background: #2b2b2b;
+    background-color: #656565;
+    border: None;
 }
 
-QTreeWidget::item:selected {
-    color: #ececec;
-    background: #303c50;
-}*/
+QTreeWidget::branch:hover {
+    background-color: None;
+    border: 2px;
 
-QTreeWidget::branch:has-children:!has-siblings:closed,
-QTreeWidget::branch:closed:has-children:has-siblings {
-    border-image: none;
-}
-
-QTreeWidget::branch:has-children:!has-siblings:closed:hover,
-QTreeWidget::branch:closed:has-children:has-siblings:hover {
-}
-
-QTreeWidget::branch:open:has-children:!has-siblings,
-QTreeWidget::branch:open:has-children:has-siblings  {
-}
-
-QTreeWidget::branch:open:has-children:!has-siblings:hover,
-QTreeWidget::branch:open:has-children:has-siblings:hover  {
-}
-
-QFrame#compFrame {
-    background-color: #151515;
-    /*border: 1px solid #4f4f4f;*/
-    /*border-radius: 3px;*/
-}
-
-QFrame#uiFrame {
-    border: 1px solid #4f4f4f;
-    border-radius: 3px;
-}
-
-</string>
+}</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>3</number>
-   </property>
-   <property name="topMargin">
-    <number>3</number>
-   </property>
-   <property name="rightMargin">
-    <number>3</number>
-   </property>
-   <property name="bottomMargin">
-    <number>3</number>
-   </property>
-   <property name="spacing">
-    <number>3</number>
-   </property>
-   <item row="0" column="2">
-    <widget class="QFrame" name="pdf_view_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <property name="leftMargin">
-       <number>3</number>
-      </property>
-      <property name="topMargin">
-       <number>3</number>
-      </property>
-      <property name="rightMargin">
-       <number>3</number>
-      </property>
-      <property name="bottomMargin">
-       <number>3</number>
-      </property>
-      <property name="spacing">
-       <number>3</number>
-      </property>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="1">
+  <widget class="QWidget" name="central_widget">
+   <widget class="QFrame" name="main_frame">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>-30</y>
+      <width>733</width>
+      <height>52</height>
+     </rect>
+    </property>
     <layout class="QGridLayout" name="main_layout">
      <property name="leftMargin">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="topMargin">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="bottomMargin">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="spacing">
       <number>3</number>
      </property>
-     <item row="2" column="0" colspan="2">
+     <item row="3" column="0" colspan="2">
       <widget class="QFrame" name="generate_frame">
        <property name="minimumSize">
         <size>
@@ -739,7 +564,40 @@ QFrame#uiFrame {
        </layout>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="1" column="1">
+      <widget class="QFrame" name="pdf_view_frame">
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="lineWidth">
+        <number>3</number>
+       </property>
+       <property name="midLineWidth">
+        <number>3</number>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QFrame" name="top_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -747,185 +605,251 @@ QFrame#uiFrame {
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QFrame" name="input_frame">
-        <property name="geometry">
-         <rect>
-          <x>37</x>
-          <y>9</y>
-          <width>200</width>
-          <height>96</height>
-         </rect>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+        <property name="rightMargin">
+         <number>0</number>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QFrame" name="button_frame">
-           <property name="minimumSize">
-            <size>
-             <width>50</width>
-             <height>50</height>
-            </size>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="output_frame">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>16777215</height>
-            </size>
+           <property name="topMargin">
+            <number>0</number>
            </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+           <property name="rightMargin">
+            <number>0</number>
            </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <layout class="QVBoxLayout" name="button_layout" stretch="1,1,0">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="add_doc_button">
-              <property name="text">
-               <string>Add</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="remove_doc_button">
-              <property name="text">
-               <string>Rem</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="button_spacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="output_frame">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>9</y>
-          <width>400</width>
-          <height>96</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="output_layout" stretch="0">
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QFrame" name="output_tree_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="input_frame">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>3</number>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <property name="leftMargin">
+            <number>0</number>
            </property>
-           <layout class="QGridLayout" name="gridLayout_2">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <property name="spacing">
-             <number>0</number>
-            </property>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
-   </item>
-  </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menu_bar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="action_new"/>
+    <addaction name="action_open"/>
+    <addaction name="action_save"/>
+    <addaction name="separator"/>
+    <addaction name="action_add_pdfs"/>
+    <addaction name="action_remove_pdfs"/>
+    <addaction name="separator"/>
+    <addaction name="action_quit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="action_undo"/>
+    <addaction name="action_redo"/>
+    <addaction name="separator"/>
+    <addaction name="action_remove_document"/>
+    <addaction name="action_remove_Page"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+  </widget>
+  <widget class="QStatusBar" name="status_bar"/>
+  <action name="actionAdd_PDFs">
+   <property name="text">
+    <string>Add PDFs</string>
+   </property>
+  </action>
+  <action name="actionRemove_PDFs">
+   <property name="text">
+    <string>Remove PDFs</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="action_undo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="toolTip">
+    <string>Undo (Ctrl + Z)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="action_redo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>Redo (Ctrl + Y)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="action_remove_document">
+   <property name="text">
+    <string>Remove Document</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="action_remove_Page">
+   <property name="text">
+    <string>Remove Page</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="action_new">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>Create New Setup (Ctrl + N)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_open">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Setup (Ctrl + O)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Setup (Ctrl + S)</string>
+   </property>
+  </action>
+  <action name="action_add_pdfs">
+   <property name="text">
+    <string>Add PDFs</string>
+   </property>
+   <property name="toolTip">
+    <string>Add PDFs (Ins)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ins</string>
+   </property>
+  </action>
+  <action name="action_remove_pdfs">
+   <property name="text">
+    <string>Remove PDFs</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove PDFs (Ctrl + D)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="action_quit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit (Ctrl + Q)</string>
+   </property>
+   <property name="shortcut">
+    <string/>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
