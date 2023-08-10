@@ -446,17 +446,7 @@ QTreeWidget
     alternate-background-color: #2a2a2a;
     border: 0px;
 }
-
-QTreeWidget::item:hover {
-    background-color: #656565;
-    border: None;
-}
-
-QTreeWidget::branch:hover {
-    background-color: None;
-    border: 2px;
-
-}</string>
+</string>
   </property>
   <widget class="QWidget" name="central_widget">
    <widget class="QFrame" name="main_frame">
@@ -699,10 +689,10 @@ QTreeWidget::branch:hover {
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>20</height>
+     <height>17</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>File</string>
     </property>
@@ -712,10 +702,12 @@ QTreeWidget::branch:hover {
     <addaction name="separator"/>
     <addaction name="action_add_pdfs"/>
     <addaction name="action_remove_pdfs"/>
+    <addaction name="action_merge_pdfs"/>
+    <addaction name="action_split_pdfs"/>
     <addaction name="separator"/>
     <addaction name="action_quit"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
+   <widget class="QMenu" name="menu_edit">
     <property name="title">
      <string>Edit</string>
     </property>
@@ -725,26 +717,26 @@ QTreeWidget::branch:hover {
     <addaction name="action_remove_document"/>
     <addaction name="action_remove_Page"/>
    </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
+   <addaction name="menu_file"/>
+   <addaction name="menu_edit"/>
   </widget>
   <widget class="QStatusBar" name="status_bar"/>
-  <action name="actionAdd_PDFs">
+  <action name="action_add_pdfs">
    <property name="text">
     <string>Add PDFs</string>
    </property>
   </action>
-  <action name="actionRemove_PDFs">
+  <action name="action_remove_pdfs">
    <property name="text">
     <string>Remove PDFs</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="action_save">
    <property name="text">
     <string>Save</string>
    </property>
   </action>
-  <action name="actionQuit">
+  <action name="action_quit">
    <property name="text">
     <string>Quit</string>
    </property>
@@ -848,6 +840,27 @@ QTreeWidget::branch:hover {
    </property>
    <property name="shortcut">
     <string/>
+   </property>
+  </action>
+  <action name="action_merge_pdfs">
+   <property name="text">
+    <string>Merge Selected PDFs</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="action_split_pdfs">
+   <property name="text">
+    <string>Split Selected PDFs</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionQuir">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

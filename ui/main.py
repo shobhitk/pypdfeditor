@@ -59,8 +59,17 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
     
     def make_connections(self):
+        self.action_new.triggered.connect(self.create_new_setup)
+        self.action_open.triggered.connect(self.open_setup)
+        self.action_save.triggered.connect(self.save_setup)
+
+        self.action_add_pdfs.triggered.connect(self.add_pdfs)
+        self.action_remove_pdfs.triggered.connect(self.remove_pdfs)
+
+        self.action_merge_pdfs.triggered.connect(self.merge_pdfs)
+        self.action_split_pdfs.triggered.connect(self.split_pdfs)
+
         self.input_list_widget.files_added.connect(self.populate_output)
-        self.action_add_pdfs.triggered.connect(self.add_docs)
         self.output_tree_widget.page_selected.connect(self.show_page)
         self.browse_button.clicked.connect(self.set_output_folder)
         self.generate_button.clicked.connect(self.generate_documents)
@@ -76,16 +85,37 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.output_line_edit.setText(result)
 
 
+    def create_new_setup(self):
+        pass
+
+
     def open_setup(self):
         setup_file, _ = QtWidgets.QFileDialog.getOpenFileName(
             None, "Open Setup file", "", "JSON (*.json)")
         self.populate_ui_from_file(setup_file)
 
+
+    def save_setup(self):
+        pass
+
     
-    def add_docs(self):
+    def add_pdfs(self):
         file_names, _ = QtWidgets.QFileDialog.getOpenFileNames(
             None, "Open files", "", "PDF (*.pdf)")
         self.input_list_widget.add_files(file_names)
+
+
+    def remove_pdfs(self):
+        pass
+
+
+    def merge_pdfs(self):
+        pass
+
+
+    def split_pdfs(self):
+        pass
+
 
     def populate_ui_from_file(self, setup_file):
         pass
