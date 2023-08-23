@@ -714,33 +714,16 @@ QTreeWidget
     <addaction name="action_undo"/>
     <addaction name="action_redo"/>
     <addaction name="separator"/>
+    <addaction name="action_new_document"/>
     <addaction name="action_remove_document"/>
-    <addaction name="action_remove_Page"/>
+    <addaction name="action_remove_page"/>
+    <addaction name="separator"/>
+    <addaction name="action_prefs"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
   </widget>
   <widget class="QStatusBar" name="status_bar"/>
-  <action name="action_add_pdfs">
-   <property name="text">
-    <string>Add PDFs</string>
-   </property>
-  </action>
-  <action name="action_remove_pdfs">
-   <property name="text">
-    <string>Remove PDFs</string>
-   </property>
-  </action>
-  <action name="action_save">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
-  <action name="action_quit">
-   <property name="text">
-    <string>Quit</string>
-   </property>
-  </action>
   <action name="action_undo">
    <property name="text">
     <string>Undo</string>
@@ -761,22 +744,6 @@ QTreeWidget
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
-   </property>
-  </action>
-  <action name="action_remove_document">
-   <property name="text">
-    <string>Remove Document</string>
-   </property>
-   <property name="shortcut">
-    <string>Del</string>
-   </property>
-  </action>
-  <action name="action_remove_Page">
-   <property name="text">
-    <string>Remove Page</string>
-   </property>
-   <property name="shortcut">
-    <string>Del</string>
    </property>
   </action>
   <action name="action_new">
@@ -858,9 +825,24 @@ QTreeWidget
     <string>Ctrl+B</string>
    </property>
   </action>
-  <action name="actionQuir">
+  <action name="action_new_document">
    <property name="text">
-    <string>Quit</string>
+    <string>Add New Documet</string>
+   </property>
+  </action>
+  <action name="action_remove_document">
+   <property name="text">
+    <string>Remove ocument</string>
+   </property>
+  </action>
+  <action name="action_remove_page">
+   <property name="text">
+    <string>Remove Page</string>
+   </property>
+  </action>
+  <action name="action_prefs">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
  </widget>

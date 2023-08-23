@@ -35,7 +35,9 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.input_list_widget = InputWidget(self)
         self.input_frame.layout().addWidget(self.input_list_widget)
         self.output_tree_widget = OutputTreeWidget(self)
+        self.undocumented_page_widget = QtWidgets.QListWidget()
         self.output_frame.layout().addWidget(self.output_tree_widget, 0,0,0,0)
+        self.output_frame.layout().addWidget(self.undocumented_page_widget, 0,1,0,0)
         self.pdf_web_view = QtWebEngineWidgets.QWebEngineView()
         self.pdf_web_page = WebPage()
         self.pdf_web_view.setPage(self.pdf_web_page)
@@ -73,6 +75,10 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.action_undo.triggered.connect(self.undo_operation)
         self.action_redo.triggered.connect(self.redo_operation)
 
+        self.action_new_document.triggered.connect(self.output_tree_widget.add_new_document)
+        self.action_remove_document.triggered.connect(self.output_tree_widget.remove_document)
+        self.action_remove_page.trigered.connect(self.output_tree_widget.remove_page)
+
         self.input_list_widget.files_added.connect(self.populate_output)
         self.output_tree_widget.page_selected.connect(self.show_page)
         self.browse_button.clicked.connect(self.set_output_folder)
@@ -96,6 +102,7 @@ class PyPdfEditor(QtWidgets.QMainWindow):
             result = self.show_confirm_dialog(window_title, confirm_text)
             if result:
                 self.save_setup()
+
         self.input_list_widget.clear()
         self.output_tree_widget.clear()
 
@@ -103,8 +110,12 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     def open_setup(self):
         setup_file, _ = QtWidgets.QFileDialog.getOpenFileName(
             None, "Open Setup file", "", "JSON (*.json)")
-        self.populate_ui_from_file(setup_file)
-
+        with open(setup_file, "r") as f:
+            pdf_dict = json.load(f)
+        input_files = self.pdf_engine.extract_input_files(pdf_dict)
+        self.input_list_widget.add_files(input_files, emit=False)
+        self.output_tree_widget.load_setup_output(pdf_dict)
+        
 
     def save_setup(self):
         data = self.output_tree_widget.return_documents_dict(

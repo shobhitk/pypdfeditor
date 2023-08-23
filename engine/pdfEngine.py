@@ -6,8 +6,7 @@ from pprint import pprint
 class PdfEngine():
     def __init__(self):
         pass
-
-
+    
     def get_pdf_pages(self, document):
         pdf_read_obj = pypdf.PdfReader(document)
         pages = pdf_read_obj.pages
@@ -30,9 +29,21 @@ class PdfEngine():
 #     }
 # }
 
-    def save_setup(self, data, filepath):
-        with open(filepath, 'w') as f:
-            json.dump(data, f)
+    def extract_input_files(self, pdf_dict):
+        files = []
+        for doc_key, doc_val in pdf_dict.items():
+            pdf_write_obj = pypdf.PdfWriter()
+            if doc_key == "output_dir":
+                continue
+            
+            for page_key, page_val in doc_val.items():
+                input_page = next(iter(page_val))
+                input_doc = open(page_val[input_page], "rb")
+                if input_doc not in files:
+                    files.append(input_doc)
+
+        return files
+
     
     def generate_pdfs(self, pdf_dict):
         output_dir = pdf_dict["output_dir"]

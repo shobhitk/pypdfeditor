@@ -9,7 +9,7 @@ ABOVE_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
 BELOW_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
 
 class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
-    def __init__(self, text, document, page=0, *args):
+    def __init__(self, text, document=None, page=0, *args):
         super(OutputTreeWidgetItem, self).__init__(*args)
         if self.parent():
             self.setFlags(self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled |
@@ -153,7 +153,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             pages = self.pdf_engine.get_pdf_pages(document)
 
             doc_base = os.path.basename(document).split(".")[0]
-            doc_item = OutputTreeWidgetItem(doc_base, document, 0, self)
+            doc_item = OutputTreeWidgetItem(doc_base, "", 0, self)
             for page_num in range(len(pages)):
                 page_name = "{0}->{1}".format(page_num + 1, doc_base)
                 page_item = OutputTreeWidgetItem(
@@ -162,6 +162,19 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             doc_item.setExpanded(True)
 
 
+    def load_setup_output(self, pdf_dict):
+        for doc_key, doc_val in pdf_dict.items():
+            if doc_key == "output_dir":
+                continue
+
+            doc_base = os.path.basename(doc_key).split(".")[0]
+            doc_item = OutputTreeWidgetItem(doc_base, "", 0, self)
+
+            for page_key in sorted(doc_val.keys()):
+                page_val = doc_val[page_key]
+                page_name = "{0}->{1}".format(next(iter(page_val)) + 1, doc_base)
+                page_item
+    
     def return_documents_dict(self, output_dir):
         # return documents dict
         root = self.invisibleRootItem()
@@ -180,6 +193,13 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             document_dict[document_item.text(0)] = page_dict
         
         return document_dict
+
+    def add_new_document(self):
+        pass
+
+
+    def remove_document(self):
+        pass
 
 
 # TEST CASE

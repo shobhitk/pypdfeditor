@@ -49,7 +49,7 @@ class InputWidget(QtWidgets.QListWidget):
         else:
             super().dropEvent(event)
 
-    def add_files(self, file_list) -> None:
+    def add_files(self, file_list, emit=True) -> None:
         # TO DO: Maybe make this a helper function
         for f in file_list:
             item = InputWidgetItem(f)
@@ -57,4 +57,5 @@ class InputWidget(QtWidgets.QListWidget):
 
         self.file_list.extend(file_list)
         self.file_list = list(set(self.file_list))
-        self.files_added.emit(file_list)
+        if emit:
+            self.files_added.emit(file_list)
