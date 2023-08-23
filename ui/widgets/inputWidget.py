@@ -3,6 +3,20 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
+class InputWidgetItem(QtWidgets.QListWidgetItem):
+    def __init__(self, path, parent=None):
+        super(MyListWidgetItem, self).__init__(parent)
+        self.set_path(path)
+
+    def get_path(self):
+        return self._path
+    
+    def set_path(self):
+        self._path = path
+        self._basename = os.path.basename(path).split(".")[0]
+        self.setText(self._basename)
+
+
 class InputWidget(QtWidgets.QListWidget):
     files_added = QtCore.pyqtSignal(list)
 
@@ -19,6 +33,7 @@ class InputWidget(QtWidgets.QListWidget):
             event.accept()
         else:
             super().dragEnterEvent(event)
+
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
         if event.mimeData().hasUrls():
             event.accept()
@@ -36,10 +51,9 @@ class InputWidget(QtWidgets.QListWidget):
 
     def add_files(self, file_list) -> None:
         # TO DO: Maybe make this a helper function
-        file_bases = [os.path.basename(f).split(".")[0]
-                      for f in file_list]
-        
-        self.addItems(file_bases)
+        for f in file_list:
+            item = InputWidgetItem(f)
+            self.addItem(item)
 
         self.file_list.extend(file_list)
         self.file_list = list(set(self.file_list))

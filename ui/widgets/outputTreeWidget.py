@@ -42,6 +42,9 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         self.itemDoubleClicked.connect(self.clear_text)
         self.itemClicked.connect(self.emit_page_selected)
 
+    def has_items(self):
+        return self.topLevelItemCount() > 0
+
 
     def get_mime_data(self, event):
         data = event.mimeData()
@@ -128,6 +131,21 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
     def clear_text(self, item):
         if item.page == 0:
             item.setText(0, "")
+
+    
+    def clear_document(self, path):
+        root = self.invisibleRootItem()
+        for doc_index in range(root.childCount()):
+            document_item = root.child(doc_index)
+            page_count = document_item.childCount()
+
+            if not page_count:
+                continue
+
+            for page_index in range(page_count):
+                page_item = document_item.child(page_index)
+                if page_item.document == path:
+                    document_item.removeChild(page_item)
 
 
     def add_documents(self, documents):
