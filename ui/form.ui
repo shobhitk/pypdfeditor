@@ -107,7 +107,7 @@ QWidget:disabled
 
 QLineEdit
 {
-    background-color: transparent;
+    background-color: #282828;
     padding: 1px;
     border-style: solid;
     border: 1px solid #1e1e1e;
@@ -711,12 +711,8 @@ QTreeWidget
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="action_undo"/>
-    <addaction name="action_redo"/>
-    <addaction name="separator"/>
     <addaction name="action_new_document"/>
-    <addaction name="action_remove_document"/>
-    <addaction name="action_remove_page"/>
+    <addaction name="action_remove"/>
     <addaction name="separator"/>
     <addaction name="action_prefs"/>
    </widget>
@@ -811,7 +807,7 @@ QTreeWidget
   </action>
   <action name="action_merge_pdfs">
    <property name="text">
-    <string>Merge Selected PDFs</string>
+    <string>Merge PDFs</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
@@ -819,7 +815,7 @@ QTreeWidget
   </action>
   <action name="action_split_pdfs">
    <property name="text">
-    <string>Split Selected PDFs</string>
+    <string>Split PDFs</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
@@ -830,9 +826,9 @@ QTreeWidget
     <string>Add New Documet</string>
    </property>
   </action>
-  <action name="action_remove_document">
+  <action name="action_remove">
    <property name="text">
-    <string>Remove ocument</string>
+    <string>Remove Page/Document</string>
    </property>
   </action>
   <action name="action_remove_page">

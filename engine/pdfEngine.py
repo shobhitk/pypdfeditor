@@ -6,6 +6,9 @@ from pprint import pprint
 class PdfEngine():
     def __init__(self):
         pass
+
+    def get_doc_basename(self, document):
+        return os.path.basename(document).split(".")[0]
     
     def get_pdf_pages(self, document):
         pdf_read_obj = pypdf.PdfReader(document)
@@ -16,7 +19,21 @@ class PdfEngine():
     def get_pdf_url(self, pdf_file, page=1):
         # <A HREF="file:////www.example.com/myfile.pdf#page=4">
         return "file:////{0}#page={1}".format(pdf_file, page)
+
     
+    def load_setup(self, load_file):
+        with open(load_file, "r") as f:
+            pdf_dict = json.load(f)
+
+        return pdf_dict
+
+
+    def save_setup(self, data, save_file):
+        if not os.path.isdir(os.path.dirname(save_file)):
+            os.makedirs(os.path.dirname(save_file))
+        with open(save_file, "w+") as f:
+            json.dump(data, f)
+
 # {
 #     "output_folder": "output",
 #     "doc_1.pdf": {
@@ -28,6 +45,35 @@ class PdfEngine():
 #         "2": {"4": "b/c/doc_2.pdf"}
 #     }
 # }
+
+    def generate_merged_dict(self, document_list, output_folder):
+        merged_doc_name = self.get_doc_basename(document_list[0]) + "_MERGED"
+        merge_dict = {
+            "output_folder": output_folder,
+            merged_doc_name: {}
+        }
+        output_page_number = 1
+        for document in document_list:
+            pages = self.get_pdf_pages(document)
+            for page_num in range(len(pages)):
+                merge_dict[merged_doc_name][str(output_page_number)] = {str(page_num + 1): document}
+                output_page_number += 1
+
+        return merge_dict
+    
+
+    def generate_split_dict(self, document_list, output_folder):
+        split_dict = {
+            "output_folder": output_folder,
+        }
+        for document in document_list:
+            pages = self.get_pdf_pages(document)
+            for page_num in range(len(pages)):
+                split_doc_name = self.get_doc_basename(document) + "_" + str(page_num + 1)
+                split_dict[split_doc_name] = {"1": {str(page_num + 1): document}}
+
+        return split_dict
+
 
     def extract_input_files(self, pdf_dict):
         files = []
@@ -75,13 +121,4 @@ class PdfEngine():
 #             'output_dir': "C:\\GitHub\\"}
 # test_pdf_engine = PdfEngine()
 # test_pdf_engine.generate_pdfs(test_pdf)
-
-
-
-
-    
-
-
-        
-
 

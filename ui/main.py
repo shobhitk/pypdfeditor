@@ -5,9 +5,9 @@ from pprint import pprint
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets, uic
 
-from engine.pdfEngine import PdfEngine
 from ui.widgets.inputWidget import InputWidget
 from ui.widgets.outputTreeWidget import OutputTreeWidget, OutputTreeWidgetItem
+from engine.pdfEngine import PdfEngine
 
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--enable-logging --log-level=3"
 
@@ -25,8 +25,6 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         uic.loadUi(path, self)
         self.setCentralWidget(self.main_frame)
         self.centralWidget().layout().setContentsMargins(3,3,3,3)
-        # self.central_widget.layout().setContentsMargins(0,0,0,0)
-        # self.central_widget.layout().addWidget(self.main_frame)
         self.top_splitter = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
         self.top_splitter.addWidget(self.input_frame)
         self.top_splitter.addWidget(self.output_frame)
@@ -35,9 +33,7 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.input_list_widget = InputWidget(self)
         self.input_frame.layout().addWidget(self.input_list_widget)
         self.output_tree_widget = OutputTreeWidget(self)
-        self.undocumented_page_widget = QtWidgets.QListWidget()
         self.output_frame.layout().addWidget(self.output_tree_widget, 0,0,0,0)
-        self.output_frame.layout().addWidget(self.undocumented_page_widget, 0,1,0,0)
         self.pdf_web_view = QtWebEngineWidgets.QWebEngineView()
         self.pdf_web_page = WebPage()
         self.pdf_web_view.setPage(self.pdf_web_page)
@@ -51,13 +47,13 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         </style >
     </head >
 </html>
-""")
-        
+"""     )  
         self.pdf_web_view.show()
         self.pdf_web_view.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PluginsEnabled, True)
         self.pdf_web_view.settings().setAttribute(QtWebEngineWidgets.QWebEngineSettings.PdfViewerEnabled, True)
         self.pdf_view_frame.layout().addWidget(self.pdf_web_view)
         self.pdf_view_frame.setMinimumWidth(500)
+        self.output_line_edit.setText(os.path.expanduser("~\\Documents\\"))
         self.make_connections()
 
     
@@ -72,14 +68,13 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.action_merge_pdfs.triggered.connect(self.merge_pdfs)
         self.action_split_pdfs.triggered.connect(self.split_pdfs)
         
-        self.action_undo.triggered.connect(self.undo_operation)
-        self.action_redo.triggered.connect(self.redo_operation)
+        # self.action_undo.triggered.connect(self.undo_operation)
+        # self.action_redo.triggered.connect(self.redo_operation)
 
         self.action_new_document.triggered.connect(self.output_tree_widget.add_new_document)
-        self.action_remove_document.triggered.connect(self.output_tree_widget.remove_document)
-        self.action_remove_page.trigered.connect(self.output_tree_widget.remove_page)
+        self.action_remove.triggered.connect(self.output_tree_widget.remove)
 
-        self.input_list_widget.files_added.connect(self.populate_output)
+        self.input_list_widget.files_added.connect(self.output_tree_widget.add_documents)
         self.output_tree_widget.page_selected.connect(self.show_page)
         self.browse_button.clicked.connect(self.set_output_folder)
         self.generate_button.clicked.connect(self.generate_documents)
@@ -95,6 +90,10 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.output_line_edit.setText(result)
 
 
+    def get_output_folder(self):
+        return self.output_line_edit.text()
+
+
     def create_new_setup(self):
         if self.output_tree_widget.has_items():
             window_title = "Save File?"
@@ -105,16 +104,20 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
         self.input_list_widget.clear()
         self.output_tree_widget.clear()
+        self.output_tree_widget.add_undocumented()
 
 
     def open_setup(self):
         setup_file, _ = QtWidgets.QFileDialog.getOpenFileName(
             None, "Open Setup file", "", "JSON (*.json)")
-        with open(setup_file, "r") as f:
-            pdf_dict = json.load(f)
-        input_files = self.pdf_engine.extract_input_files(pdf_dict)
-        self.input_list_widget.add_files(input_files, emit=False)
-        self.output_tree_widget.load_setup_output(pdf_dict)
+
+        if setup_file:
+            pdf_dict = self.pdf_engine.load_setup(setup_file)
+            input_files = self.pdf_engine.extract_input_files(pdf_dict)
+            self.input_list_widget.add_files(input_files, emit=False)
+            self.output_tree_widget.load_setup_output(pdf_dict)
+
+        self.status_bar.showMessage("Setup Loaded.")
         
 
     def save_setup(self):
@@ -128,48 +131,54 @@ class PyPdfEditor(QtWidgets.QMainWindow):
             file_name = file_dialog.selectedFiles()[0]
             self.pdf_engine.save_setup(data, file_name)
 
+        self.status_bar.showMessage("PDF Setup Changed.")
+
     
     def add_pdfs(self):
         file_names, _ = QtWidgets.QFileDialog.getOpenFileNames(
             None, "Open files", "", "PDF (*.pdf)")
         self.input_list_widget.add_files(file_names)
+        self.status_bar.showMessage("Files Added.")
 
 
     def remove_pdfs(self):
         selected_pdfs = self.input_list_widget.selectedItems()
         for item in selected_pdfs:
-            removed_item = self.input_list_widget.takeItem(item)
+            item_index = self.input_list_widget.row(item)
+            removed_item = self.input_list_widget.takeItem(item_index)
             # clear all pages belonging to that document from the output_tree_widget
-            self.output_tree_widget.clear_document(removed_item.path)
-        pass
+            self.output_tree_widget.clear_document(removed_item.text())
+        
+        self.status_bar.showMessage("Files Removed.")
 
 
     def merge_pdfs(self):
-        pass
+        document_list = self.input_list_widget.get_document_list()
+        output_folder = self.get_output_folder()
+        merge_dict = self.pdf_engine.generate_merged_dict(document_list, output_folder)
+        self.output_tree_widget.clear_setup()
+        self.output_tree_widget.load_setup(merge_dict)
 
 
     def split_pdfs(self):
-        pass
-
-    
-    def undo_operation(self):
-        pass
-
-
-    def redo_operation(self):
-        pass
+        document_list = self.input_list_widget.get_document_list()
+        output_folder = self.get_output_folder()
+        split_dict = self.pdf_engine.generate_split_dict(document_list, output_folder)
+        self.output_tree_widget.clear_setup()
+        self.output_tree_widget.load_setup(split_dict)
 
 
-    def populate_ui_from_file(self, setup_file):
-        pass
+    # def undo_operation(self):
+    #     pass
 
 
-    def populate_output(self, files):
-        self.output_tree_widget.add_documents(files)
+    # def redo_operation(self):
+    #     pass
 
     
     def show_page(self, document, page):
         url_str = self.pdf_engine.get_pdf_url(document, page)
+        self.status_bar.showMessage(url_str)
         self.pdf_web_view.load(QtCore.QUrl(url_str))
 
 
@@ -211,8 +220,7 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
     def generate_documents(self):
         output_dir = self.output_line_edit.text()
-        output_dict = self.output_tree_widget.return_documents_dict(output_dir)
-        # print(output_dict)
+        output_dict = self.output_tree_widget.get_current_setup(output_dir)
         confirm = self.confirm_output(output_dict)
         if not confirm:
             return
@@ -220,5 +228,4 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         result = self.pdf_engine.generate_pdfs(output_dict)
         if result:
             self.show_success_dialog(result)
-
 
