@@ -103,7 +103,7 @@ class PdfEngine():
                 input_page = next(iter(page_val))
                 input_doc = open(page_val[input_page], "rb")
                 pdf_write_obj.append(
-                    fileobj=input_doc, pages=(page_key-1, page_key))
+                    fileobj=input_doc, pages=(int(input_page)-1, int(input_page)))
             
             out_path = os.path.join(output_dir, doc_key + ".pdf")
             output = open(out_path, "wb")
@@ -116,9 +116,10 @@ class PdfEngine():
 
 
 # test
-# test_pdf = {'ANNEXURE-E filled': [(1, 'C:/Users/shobh/Documents/ANNEXURE-E filled.pdf'),
-#                                   (1, 'C:/Users/shobh/Documents/Accounts Overview.pdf')],
-#             'output_dir': "C:\\GitHub\\"}
-# test_pdf_engine = PdfEngine()
-# test_pdf_engine.generate_pdfs(test_pdf)
+test_pdf = {'Khinvasara-Shobhit-Passport': {
+    "1":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_1.pdf"},
+    "2":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_2.pdf"}},
+    'output_dir': "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal"}
+test_pdf_engine = PdfEngine()
+test_pdf_engine.generate_pdfs(test_pdf)
 

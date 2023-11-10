@@ -169,7 +169,8 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
 
     def emit_page_selected(self, item):
-        self.page_selected.emit(item.get_source_document(), item.get_source_page_num())
+        if isinstance(item, OutputTreeWidgetItem):
+            self.page_selected.emit(item.get_source_document(), item.get_source_page_num())
 
     
     def clear_setup(self):
@@ -178,7 +179,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
 
     def clear_text(self, item):
-        if item.page == 0:
+        if item.source_page_num == 0:
             item.setText(0, "")
 
     
@@ -264,7 +265,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_dict[page_index + 1] = {page_item.page: page_item.document}
+                page_dict[page_index + 1] = {page_item.source_page_num: page_item.document}
 
             document_dict[document_item.text(0)] = page_dict
         
@@ -303,14 +304,13 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 else:
                     # Reparent pages of doc item to undocumented_item
                     child_items = self._get_items()
-                    if len(child_items):
+                    if list(child_items):
                         for item in child_items:
                             self._reparent_item(item, self.undocumented_item)
 
                     # delete doc item pages
-                    doc_item = self.takeTopLevelItem(item)
-                    del doc_item
-
+                    self.invisibleRootItem().removeChild(item)
+                    
 
 # TEST CASE
 # class TestWindow(QtWidgets.QDialog):
