@@ -2,6 +2,8 @@
 import os
 from pathlib import Path
 from pprint import pprint
+import logging
+logger = logging.getLogger()
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets, uic
 
@@ -75,7 +77,7 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.action_remove.triggered.connect(self.output_tree_widget.remove)
 
         self.input_list_widget.files_added.connect(self.output_tree_widget.add_documents)
-        self.output_tree_widget.page_selected.connect(self.show_page)
+        self.input_list_widget.document_selected.connect(self.show_document)
         self.browse_button.clicked.connect(self.set_output_folder)
         self.generate_button.clicked.connect(self.generate_documents)
         self.close_button.clicked.connect(self.close)
@@ -176,8 +178,8 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     #     pass
 
     
-    def show_page(self, document, page):
-        url_str = self.pdf_engine.get_pdf_url(document, page)
+    def show_document(self, document):
+        url_str = self.pdf_engine.get_pdf_url(document)
         self.status_bar.showMessage(url_str)
         self.pdf_web_view.load(QtCore.QUrl(url_str))
 
@@ -185,7 +187,7 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     def show_success_dialog(self, result):
         msg = QtWidgets.QMessageBox(self)
         msg.setIcon(QtWidgets.QMessageBox.Information)
-        msg.setText("These PDF files were successfully generated:\n", "\n".join(result))
+        msg.setText("These PDF files were successfully generated:\n" + "\n".join(result))
         msg.setWindowTitle("Success!")
         msg.show()
 

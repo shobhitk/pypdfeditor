@@ -12,13 +12,15 @@ class PdfEngine():
     
     def get_pdf_pages(self, document):
         pdf_read_obj = pypdf.PdfReader(document)
+        if pdf_read_obj.is_encrypted:
+            pdf_read_obj.decrypt("AES-256")
         pages = pdf_read_obj.pages
         return pages
 
 
-    def get_pdf_url(self, pdf_file, page=1):
+    def get_pdf_url(self, pdf_file):
         # <A HREF="file:////www.example.com/myfile.pdf#page=4">
-        return "file:////{0}#page={1}".format(pdf_file, page)
+        return "file:////{0}".format(pdf_file)
 
     
     def load_setup(self, load_file):
@@ -116,10 +118,10 @@ class PdfEngine():
 
 
 # test
-test_pdf = {'Khinvasara-Shobhit-Passport': {
-    "1":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_1.pdf"},
-    "2":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_2.pdf"}},
-    'output_dir': "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal"}
-test_pdf_engine = PdfEngine()
-test_pdf_engine.generate_pdfs(test_pdf)
+# test_pdf = {'Khinvasara-Shobhit-Passport': {
+#     "1":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_1.pdf"},
+#     "2":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_2.pdf"}},
+#     'output_dir': "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal"}
+# test_pdf_engine = PdfEngine()
+# test_pdf_engine.generate_pdfs(test_pdf)
 

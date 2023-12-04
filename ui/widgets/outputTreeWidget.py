@@ -1,6 +1,8 @@
 # # This Python file uses the following encoding: utf-8
 import os
 import sys
+import logging
+logger = logging.getLogger()
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
@@ -40,8 +42,6 @@ class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
 
 
 class OutputTreeWidget(QtWidgets.QTreeWidget):
-    page_selected = QtCore.pyqtSignal(str, int)
-
     def __init__(self, parent=None):
         super(OutputTreeWidget, self).__init__(parent=parent)
         self.setHeaderLabel("PDF Output")
@@ -59,7 +59,6 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             self.pdf_engine = parent.pdf_engine
         
         self.itemDoubleClicked.connect(self.clear_text)
-        self.itemClicked.connect(self.emit_page_selected)
         self.add_undocumented()
         self.expandAll()
 
@@ -167,11 +166,6 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         else:
             super().dropEvent(event)
 
-
-    def emit_page_selected(self, item):
-        if isinstance(item, OutputTreeWidgetItem):
-            self.page_selected.emit(item.get_source_document(), item.get_source_page_num())
-
     
     def clear_setup(self):
         self.clear()
@@ -206,6 +200,9 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
     def add_documents(self, documents):
         for document in documents:
             pages = self.pdf_engine.get_pdf_pages(document)
+            if not pages:
+                logger.info("Unable to open document because it's encrypted: " + document)
+                continue
 
             doc_base = self.pdf_engine.get_doc_basename(document)
             doc_item = OutputTreeWidgetItem(doc_base, None, 0, self)
@@ -265,7 +262,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_dict[page_index + 1] = {page_item.source_page_num: page_item.document}
+                page_dict[page_index + 1] = {page_item.source_page_num: page_item.source_document}
 
             document_dict[document_item.text(0)] = page_dict
         
