@@ -2,7 +2,10 @@
 import os
 import sys
 import logging
+import json
+
 logger = logging.getLogger()
+from pprint import pprint
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
@@ -10,16 +13,23 @@ ON_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnItem
 ABOVE_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.AboveItem
 BELOW_ITEM = QtWidgets.QAbstractItemView.DropIndicatorPosition.BelowItem
 
+
 class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, name, source_document=None, source_page_num=0, *args):
         super(OutputTreeWidgetItem, self).__init__(*args)
         if self.parent():
-            self.setFlags(self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled |
-                          ~QtCore.Qt.ItemFlag.ItemIsDropEnabled & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+            self.setFlags(
+                self.flags() & QtCore.Qt.ItemFlag.ItemIsDragEnabled
+                | ~QtCore.Qt.ItemFlag.ItemIsDropEnabled
+                & ~QtCore.Qt.ItemFlag.ItemIsEditable
+            )
         else:
-            self.setFlags(self.flags() & ~QtCore.Qt.ItemFlag.ItemIsDragEnabled |
-                          QtCore.Qt.ItemFlag.ItemIsDropEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
-            
+            self.setFlags(
+                self.flags() & ~QtCore.Qt.ItemFlag.ItemIsDragEnabled
+                | QtCore.Qt.ItemFlag.ItemIsDropEnabled
+                | QtCore.Qt.ItemFlag.ItemIsEditable
+            )
+
         self.setText(0, name)
         self.source_document = source_document
         if self.source_document:
@@ -27,15 +37,12 @@ class OutputTreeWidgetItem(QtWidgets.QTreeWidgetItem):
         self.source_page_num = source_page_num
         self.setExpanded(True)
 
-
     def get_output_page_num(self):
         if self.parent():
             return self.parent().getIndexOfChild()
 
-
     def get_source_document(self):
         return self.source_document
-
 
     def get_source_page_num(self):
         return self.source_page_num
@@ -46,23 +53,20 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         super(OutputTreeWidget, self).__init__(parent=parent)
         self.setHeaderLabel("PDF Output")
         self.header().setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.setSelectionMode(
-            QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
-        self.setDragDropMode(
-            QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
 
         self.setColumnCount(2)
         self.setHeaderLabels(["Document/Page", "Source Document"])
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        
+
         if parent:
             self.pdf_engine = parent.pdf_engine
-        
+
         self.itemDoubleClicked.connect(self.clear_text)
         self.add_undocumented()
         self.expandAll()
 
-    
     def _get_items(self, parent_item=None):
         """Method to return generator of items in the tree.
 
@@ -76,35 +80,32 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
         item_gen = (root.child(i) for i in range(child_count))
         return item_gen
 
-    
     def _reparent_item(self, item, new_parent):
         item = item.parent().takeChild(item.parent().indexOfChild(item))
         new_parent.addChild(item)
-
 
     def add_undocumented(self):
         self.undocumented_item = OutputTreeWidgetItem("__UNDOCUMENTED__")
         self.insertTopLevelItem(0, self.undocumented_item)
 
-
     def has_items(self):
         return self.topLevelItemCount() > 0
-
 
     def get_mime_data(self, event):
         data = event.mimeData()
         source_item = QtGui.QStandardItemModel()
         source_item.dropMimeData(
-            data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex())
+            data, QtCore.Qt.DropAction.MoveAction, 0, 0, QtCore.QModelIndex()
+        )
         return source_item.item(0, 0).text()
 
-    
     def set_stylesheet_for_position(self, position):
         if position == ON_ITEM:
-            self.setStyleSheet("""QTreeView::item:hover { background-color: #656565;}""")
+            self.setStyleSheet(
+                """QTreeView::item:hover { background-color: #656565;}"""
+            )
         else:
             self.setStyleSheet("""QTreeView::item:hover { background-color: None;}""")
-
 
     def check_position(self, pos, rect):
         indicator = QtWidgets.QAbstractItemView.DropIndicatorPosition.OnViewport
@@ -122,7 +123,6 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 indicator = ON_ITEM
         return indicator
 
-
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent) -> None:
         drag_index = self.indexAt(event.pos())
         drag_item = self.itemFromIndex(drag_index)
@@ -130,18 +130,17 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             return
 
         drag_position = self.check_position(
-            event.pos(),
-            self.visualItemRect(self.itemFromIndex(drag_index))
+            event.pos(), self.visualItemRect(self.itemFromIndex(drag_index))
         )
         self.set_stylesheet_for_position(drag_position)
 
-        if (drag_position == ON_ITEM and drag_item.parent()) or \
-            (drag_position in [ABOVE_ITEM, BELOW_ITEM] and not drag_item.parent()):
+        if (drag_position == ON_ITEM and drag_item.parent()) or (
+            drag_position in [ABOVE_ITEM, BELOW_ITEM] and not drag_item.parent()
+        ):
             event.ignore()
 
         else:
             super().dragMoveEvent(event)
-
 
     def dropEvent(self, event: QtGui.QDropEvent) -> None:
         # Chech what's the drop-destination.
@@ -153,30 +152,27 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             return
 
         drop_position = self.check_position(
-            event.pos(),
-            self.visualItemRect(drop_target_item)
+            event.pos(), self.visualItemRect(drop_target_item)
         )
 
         self.set_stylesheet_for_position(drop_position)
 
-        if (drop_position == ON_ITEM and drop_target_item.parent()) or \
-            (drop_position in [ABOVE_ITEM, BELOW_ITEM] and not drop_target_item.parent()):
+        if (drop_position == ON_ITEM and drop_target_item.parent()) or (
+            drop_position in [ABOVE_ITEM, BELOW_ITEM] and not drop_target_item.parent()
+        ):
             event.ignore()
 
         else:
             super().dropEvent(event)
 
-    
     def clear_setup(self):
         self.clear()
         self.add_undocumented()
-
 
     def clear_text(self, item):
         if item.source_page_num == 0:
             item.setText(0, "")
 
-    
     def clear_document(self, path):
         root = self.invisibleRootItem()
         for doc_index in range(root.childCount()):
@@ -196,12 +192,13 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 # remove the document
                 root.removeChild(document_item)
 
-
     def add_documents(self, documents):
         for document in documents:
             pages = self.pdf_engine.get_pdf_pages(document)
             if not pages:
-                logger.info("Unable to open document because it's encrypted: " + document)
+                logger.info(
+                    "Unable to open document because it's encrypted: " + document
+                )
                 continue
 
             doc_base = self.pdf_engine.get_doc_basename(document)
@@ -210,45 +207,46 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 page_name = "{0}".format(page_num + 1)
                 page_item = OutputTreeWidgetItem(
                     page_name,
-                    document, # source document
-                    page_num + 1, # source page number
-                    doc_item
+                    document,  # source document
+                    page_num + 1,  # source page number
+                    doc_item,
                 )
             self.addTopLevelItem(doc_item)
             doc_item.setExpanded(True)
 
-# {
-#     "output_folder": "output",
-#     "doc_1": {
-#         "1": {"1": "a/b/doc_1.pdf"},
-#         "2": {"1": "b/c/doc_2.pdf"}
-#     },
-#     "doc_2": {
-#         "1": {"3": "a/b/doc_1.pdf"},
-#         "2": {"4": "b/c/doc_2.pdf"}
-#     }
-# }
+    # {
+    #     "output_folder": "output",
+    #     "doc_1": {
+    #         "1": {"1": "a/b/doc_1.pdf"},
+    #         "2": {"1": "b/c/doc_2.pdf"}
+    #     },
+    #     "doc_2": {
+    #         "1": {"3": "a/b/doc_1.pdf"},
+    #         "2": {"4": "b/c/doc_2.pdf"}
+    #     }
+    # }
 
     def load_setup(self, pdf_dict):
         for doc_key in pdf_dict.keys():
-            if doc_key in ["output_folder", "__UNDOCUMENTED__"]:
+            if doc_key in ["output_dir", "__UNDOCUMENTED__"]:
                 continue
-            
+            pprint(pdf_dict)
+            pprint(pdf_dict[doc_key])
             doc_val = pdf_dict[doc_key]
             doc_base = os.path.basename(doc_key).split(".")[0]
+            print(doc_base)
             doc_item = OutputTreeWidgetItem(doc_base, None, 0, self)
             for page_key in sorted(doc_val.keys()):
                 page_val = doc_val[page_key]
                 source_page_num = next(iter(page_val))
                 page_name = "{}".format(source_page_num)
                 page_item = OutputTreeWidgetItem(
-                    page_name, 
-                    page_val[source_page_num], # source_document
-                    int(source_page_num), # source_page_num
-                    doc_item
+                    page_name,
+                    page_val[source_page_num],  # source_document
+                    int(source_page_num),  # source_page_num
+                    doc_item,
                 )
 
-    
     def get_current_setup(self, output_dir):
         # return documents dict
         root = self.invisibleRootItem()
@@ -262,42 +260,44 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_dict[page_index + 1] = {page_item.source_page_num: page_item.source_document}
+                page_dict[page_index + 1] = {
+                    page_item.source_page_num: page_item.source_document
+                }
 
             document_dict[document_item.text(0)] = page_dict
-        
-        return document_dict
 
+        return document_dict
 
     def add_new_document(self):
         name, ok = QtWidgets.QInputDialog().getText(
-            self,
-            "Please Specify the document name.",
-            "Document name:"
+            self, "Please Specify the document name.", "Document name:"
         )
         if not ok:
             return
 
-        selected_items = [item for item in self.selectedItems() if item.get_source_document()]
+        selected_items = [
+            item for item in self.selectedItems() if item.get_source_document()
+        ]
         doc_item = OutputTreeWidgetItem(name, None, 0, self)
         self.addTopLevelItem(doc_item)
         if selected_items:
             for item in selected_items:
                 self._reparent_item(item, doc_item)
 
-
     def remove(self):
         selected_items = self.selectedItems()
-        result = QtWidgets.QMessageBox.question(self, 
+        result = QtWidgets.QMessageBox.question(
+            self,
             "Delete Items",
             "This will delete the document and move all its pages to UNDOCUMENTED.\n Are you sure you want to continue?",
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        )
 
         if result == QtWidgets.QMessageBox.Yes:
             for item in selected_items:
                 if item.get_source_document():
                     self._reparent_item(item, self.undocumented_item)
-                
+
                 else:
                     # Reparent pages of doc item to undocumented_item
                     child_items = self._get_items()
@@ -307,7 +307,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
                     # delete doc item pages
                     self.invisibleRootItem().removeChild(item)
-                    
+
 
 # TEST CASE
 # class TestWindow(QtWidgets.QDialog):
@@ -343,5 +343,3 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 #     widget = TestWindow()
 #     widget.show()
 #     sys.exit(app.exec())
-
- 

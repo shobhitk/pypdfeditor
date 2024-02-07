@@ -51,7 +51,7 @@ class InputWidget(QtWidgets.QListWidget):
     def add_files(self, document_list, emit=True):
         # TO DO: Maybe make this a helper function
         for f in document_list:
-            self.addItem(f)
+            self.addItem(str(f))
 
         self.document_list.extend(document_list)
         self.document_list = list(set(self.document_list))

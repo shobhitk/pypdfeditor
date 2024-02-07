@@ -24,9 +24,9 @@ class PdfEngine():
 
     
     def load_setup(self, load_file):
-        with open(load_file, "r") as f:
+        with open(load_file, "r", encoding="utf-8") as f:
             pdf_dict = json.load(f)
-
+        
         return pdf_dict
 
 
@@ -34,7 +34,7 @@ class PdfEngine():
         if not os.path.isdir(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
         with open(save_file, "w+") as f:
-            json.dump(data, f)
+            json.dump(data, f, indent=4)
 
 # {
 #     "output_folder": "output",
@@ -80,13 +80,12 @@ class PdfEngine():
     def extract_input_files(self, pdf_dict):
         files = []
         for doc_key, doc_val in pdf_dict.items():
-            pdf_write_obj = pypdf.PdfWriter()
             if doc_key == "output_dir":
                 continue
             
             for page_key, page_val in doc_val.items():
                 input_page = next(iter(page_val))
-                input_doc = open(page_val[input_page], "rb")
+                input_doc = page_val[input_page]
                 if input_doc not in files:
                     files.append(input_doc)
 
