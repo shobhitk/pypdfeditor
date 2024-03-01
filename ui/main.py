@@ -194,20 +194,20 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
     def show_success_dialog(self, result):
         msg = QtWidgets.QMessageBox(self)
-        msg.setMinimumHeight(30)
         msg.setIcon(QtWidgets.QMessageBox.Information)
-        msg.setText("These PDF files were successfully generated:\n" + "\n".join(result))
         msg.setWindowTitle("Success!")
+        msg.setText("These PDF files were successfully generated:\n" + "\n".join(result))
+        msg.adjustSize()
         msg.show()
 
 
     def show_confirm_dialog(self, window_title, confirm_text):
-        msg = QtWidgets.QMessageBox()
+        msg = QtWidgets.QMessageBox(self)
         msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setMinimumHeight(30)
         msg.setWindowTitle(window_title)
         msg.setText(confirm_text)
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        msg.adjustSize()
         result = msg.exec_()
         return result == QtWidgets.QMessageBox.Ok
 

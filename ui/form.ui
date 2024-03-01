@@ -40,7 +40,6 @@ QWidget
 QLabel
 {
     color: #b1b1b1;
-    min-height: 1px;
     background-color: rgba(50,50,50,0);
 }
 
@@ -258,6 +257,14 @@ QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
     subcontrol-origin: margin;
 }
 
+QHeaderView::section
+{
+    background-color: #444444;
+    border-right: 1px solid #2c2c2c;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 0px;
+}
 
 QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
 {

@@ -37,7 +37,7 @@ class PdfEngine():
             json.dump(data, f, indent=4)
 
 # {
-#     "output_folder": "output",
+#     "output_dir": "output",
 #     "doc_1.pdf": {
 #         "1": {"1": "a/b/doc_1.pdf"},
 #         "2": {"1": "b/c/doc_2.pdf"}
@@ -51,7 +51,7 @@ class PdfEngine():
     def generate_merged_dict(self, document_list, output_folder):
         merged_doc_name = self.get_doc_basename(document_list[0]) + "_MERGED"
         merge_dict = {
-            "output_folder": output_folder,
+            "output_dir": output_folder,
             merged_doc_name: {}
         }
         output_page_number = 1
@@ -66,7 +66,7 @@ class PdfEngine():
 
     def generate_split_dict(self, document_list, output_folder):
         split_dict = {
-            "output_folder": output_folder,
+            "output_dir": output_folder,
         }
         for document in document_list:
             pages = self.get_pdf_pages(document)
