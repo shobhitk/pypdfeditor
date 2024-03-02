@@ -87,7 +87,8 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     def set_output_folder(self):
         result = QtWidgets.QFileDialog.getExistingDirectory(
             None, 
-            caption='Select Directory',
+            'Select Directory',
+            os.path.expanduser("~/Documents"),
             options=QtWidgets.QFileDialog.ShowDirsOnly)
 
         self.output_line_edit.setText(result)
@@ -112,8 +113,11 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
     def open_setup(self):
         setup_file, _ = QtWidgets.QFileDialog.getOpenFileName(
-            None, "Open Setup file", "", "JSON (*.json)")
-
+            None, 
+            "Open Setup file", 
+            os.path.expanduser("~/Documents"),
+            "JSON (*.json)"
+        )
         if setup_file:
             pdf_dict = self.pdf_engine.load_setup(setup_file)
             output_dir = pdf_dict['output_dir']
@@ -141,7 +145,11 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     
     def add_pdfs(self):
         file_names, _ = QtWidgets.QFileDialog.getOpenFileNames(
-            None, "Open files", "", "PDF (*.pdf)")
+            None, 
+            "Open files", 
+            os.path.expanduser("~/Documents"),
+            "PDF (*.pdf)"
+        )
         self.input_list_widget.add_files(file_names)
         self.status_bar.showMessage("Files Added.")
 
@@ -198,6 +206,15 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         msg.adjustSize()
         msg.show()
 
+    
+    def show_error_dialog(self, message):
+        msg = QtWidgets.QMessageBox(self)
+        msg.setIcon(QtWidgets.QMessageBox.Critical)
+        msg.setWindowTitle("Error!")
+        msg.setText(message)
+        msg.adjustSize()
+        msg.show()
+
 
     def show_confirm_dialog(self, window_title, confirm_text):
         msg = QtWidgets.QMessageBox(self)
@@ -213,10 +230,15 @@ class PyPdfEditor(QtWidgets.QMainWindow):
     def confirm_output(self, output_dict):
         output_dir = output_dict['output_dir']
         files_exist = []
+        # check if output file is same as one of the input files. 
+        # We cannot allow this as we would be overwriting a file as its being read.
         for doc_key in output_dict.keys():
-            out_file = os.path.join(output_dir, doc_key + ".pdf")
+            out_file = output_dir + "/" + doc_key + ".pdf"
             if os.path.exists(out_file):
                 files_exist.append(out_file)
+                if out_file in self.input_list_widget.get_document_list():
+                    self.show_error_dialog("Output files cannot be the same as the input files. Please choose a different output directory or change the Output file names.")
+                    return
         
         if files_exist:
             window_title = "Overwrite Files?"

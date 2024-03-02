@@ -6,7 +6,6 @@ logger = logging.getLogger()
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
-
 class InputWidget(QtWidgets.QListWidget):
     files_added = QtCore.pyqtSignal(list)
     document_selected = QtCore.pyqtSignal(str)
