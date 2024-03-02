@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Pdf Editor</string>
+   <string>PDF Editor</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QToolTip
@@ -576,7 +576,7 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>17</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -603,8 +603,15 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
     <addaction name="separator"/>
     <addaction name="action_prefs"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="status_bar"/>
   <action name="action_undo">
@@ -726,6 +733,11 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
   <action name="action_prefs">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

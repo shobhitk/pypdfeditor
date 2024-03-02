@@ -1,6 +1,5 @@
 # # This Python file uses the following encoding: utf-8
 import os
-import sys
 import logging
 logger = logging.getLogger()
 
@@ -221,17 +220,6 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             self.addTopLevelItem(doc_item)
             doc_item.setExpanded(True)
 
-# {
-#     "output_folder": "output",
-#     "doc_1": {
-#         "1": {"1": "a/b/doc_1.pdf"},
-#         "2": {"1": "b/c/doc_2.pdf"}
-#     },
-#     "doc_2": {
-#         "1": {"3": "a/b/doc_1.pdf"},
-#         "2": {"4": "b/c/doc_2.pdf"}
-#     }
-# }
 
     def load_setup(self, pdf_dict):
         for doc_key in pdf_dict.keys():

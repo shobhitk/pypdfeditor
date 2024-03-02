@@ -1,19 +1,20 @@
 # # This Python file uses the following encoding: utf-8
+
 import os
 from pathlib import Path
-from pprint import pprint
+import webbrowser
 import logging
 logger = logging.getLogger()
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets, uic
+from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets, uic
 
 from ui.widgets.inputWidget import InputWidget
 from ui.widgets.outputTreeWidget import OutputTreeWidget, OutputTreeWidgetItem
 from engine.pdfEngine import PdfEngine
 
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--enable-logging --log-level=3"
-
-default_html = """
+github_url = "https://github.com/shobhitk/pypdfeditor"
+default_html = """`
 <html>
     <head>
         <style>
@@ -70,12 +71,11 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
         self.action_merge_pdfs.triggered.connect(self.merge_pdfs)
         self.action_split_pdfs.triggered.connect(self.split_pdfs)
-        
-        # self.action_undo.triggered.connect(self.undo_operation)
-        # self.action_redo.triggered.connect(self.redo_operation)
 
         self.action_new_document.triggered.connect(self.output_tree_widget.add_new_document)
         self.action_remove.triggered.connect(self.output_tree_widget.remove)
+
+        self.action_about.triggered.connect(self.open_about)
 
         self.input_list_widget.files_added.connect(self.output_tree_widget.add_documents)
         self.input_list_widget.document_selected.connect(self.show_document)
@@ -116,7 +116,9 @@ class PyPdfEditor(QtWidgets.QMainWindow):
 
         if setup_file:
             pdf_dict = self.pdf_engine.load_setup(setup_file)
+            output_dir = pdf_dict['output_dir']
             input_files = self.pdf_engine.extract_input_files(pdf_dict)
+            self.output_line_edit.setText(output_dir)
             self.input_list_widget.add_files(input_files, emit=False)
             self.output_tree_widget.load_setup(pdf_dict)
 
@@ -173,15 +175,11 @@ class PyPdfEditor(QtWidgets.QMainWindow):
         self.output_tree_widget.clear_setup()
         self.output_tree_widget.load_setup(split_dict)
 
-
-    # def undo_operation(self):
-    #     pass
-
-
-    # def redo_operation(self):
-    #     pass
-        
     
+    def open_about(self):
+        webbrowser.open(github_url)
+
+
     def clear_document_from_view(self):
         self.pdf_web_view.setHtml(default_html)  
 
