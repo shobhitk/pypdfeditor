@@ -186,8 +186,16 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             event.ignore()
 
         else:
-            super().dropEvent(event)
-
+            # Re-implement dropEvent to 
+            current_item = self.currentItem()
+            current_item_parent = current_item.parent()
+            current_item_index = current_item_parent.indexOfChild(current_item)
+            current_item = current_item_parent.takeChild(current_item_index)
+            if drop_target_item.parent():
+                drop_target_item.parent().insertChild(drop_index.row() + 1, current_item)
+            else:
+                drop_target_item.addChild(current_item)
+            
     
     def clear_setup(self):
         self.clear()
@@ -209,7 +217,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
             doc_base = self.pdf_engine.get_doc_basename(document)
             doc_item = OutputTreeWidgetItem(doc_base, None, 0, self)
             for page_num in range(len(pages)):
-                page_name = "{0}".format(page_num + 1)
+                page_name = "{}".format(page_num + 1)
                 page_item = OutputTreeWidgetItem(
                     page_name,
                     document, # source document
@@ -257,7 +265,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
             for page_index in range(page_count):
                 page_item = document_item.child(page_index)
-                page_dict[page_index + 1] = {page_item.source_page_num: page_item.source_document}
+                page_dict[page_index + 1] = {page_item.get_source_page_num(): page_item.get_source_document()}
 
             document_dict[document_item.text(0)] = page_dict
         
@@ -295,6 +303,10 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
 
         if result == QtWidgets.QMessageBox.Yes or result == True:
             for item in items:
+                if item.text(0) == "__UNDOCUMENTED__":
+                    logger.info("Cannot Delete __UNDOCUMENTED__!")
+                    continue
+
                 if item.get_source_document():
                     self._reparent_item(item, self.undocumented_item)
                 
