@@ -264,6 +264,7 @@ class OutputTreeWidget(QtWidgets.QTreeWidget):
                 continue
 
             for page_index in range(page_count):
+                print(page_index)
                 page_item = document_item.child(page_index)
                 page_dict[page_index + 1] = {page_item.get_source_page_num(): page_item.get_source_document()}
 
