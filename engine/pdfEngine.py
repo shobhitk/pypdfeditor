@@ -1,16 +1,33 @@
 import os
 import json
 import pypdf
-from pprint import pprint
 
 class PdfEngine():
+    """PDF Class object to manage and generate PDF Setup files and PDF files.
+    """
     def __init__(self):
         pass
 
     def get_doc_basename(self, document):
+        """Returns basename of document.
+
+        Args:
+            document (string): File Path.
+
+        Returns:
+            string: Path basename.
+        """
         return os.path.basename(document).split(".")[0]
     
     def get_pdf_pages(self, document):
+        """Returns Pages of the document.
+
+        Args:
+            document (string): Path of PDF file.
+
+        Returns:
+            list: Returns list of PageObjects.
+        """
         pdf_read_obj = pypdf.PdfReader(document)
         if pdf_read_obj.is_encrypted:
             pdf_read_obj.decrypt("AES-256")
@@ -19,39 +36,58 @@ class PdfEngine():
 
 
     def get_pdf_url(self, pdf_file):
-        # <A HREF="file:////www.example.com/myfile.pdf#page=4">
+        """Generate and Return pdf URL 
+
+        Args:
+            pdf_file (string): PDF path.
+                # Example URL"file:////www.example.com/myfile.pdf">
+
+        Returns:
+            string: PDF URL.
+        """
         return "file:////{0}".format(pdf_file)
 
     
     def load_setup(self, load_file):
-        with open(load_file, "r", encoding="utf-8") as f:
+        """Reads PDF setup file and returns PDF Setup Dict
+
+        Args:
+            load_file (string): Setup File JSON.
+
+        Returns:
+            dict: Setup dictionary.
+        """
+        with open(load_file, "r") as f:
             pdf_dict = json.load(f)
-        
+
         return pdf_dict
 
 
     def save_setup(self, data, save_file):
+        """Saves the PDF Setup data and saves the JSON file.
+
+        Args:
+            data (dict): PDF Setup Data dict.
+            save_file (string): Setup JSON filepath.
+        """
         if not os.path.isdir(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
         with open(save_file, "w+") as f:
             json.dump(data, f, indent=4)
 
-# {
-#     "output_folder": "output",
-#     "doc_1.pdf": {
-#         "1": {"1": "a/b/doc_1.pdf"},
-#         "2": {"1": "b/c/doc_2.pdf"}
-#     },
-#     "doc_2.pdf": {
-#         "1": {"3": "a/b/doc_1.pdf"},
-#         "2": {"4": "b/c/doc_2.pdf"}
-#     }
-# }
-
     def generate_merged_dict(self, document_list, output_folder):
+        """Generate Merged PDF Setup dictionary from the document list.
+
+        Args:
+            document_list (list): List of PDF files.
+            output_folder (string): Path of output file.
+
+        Returns:
+            dict: Merged PDF Setup dictionary.
+        """
         merged_doc_name = self.get_doc_basename(document_list[0]) + "_MERGED"
         merge_dict = {
-            "output_folder": output_folder,
+            "output_dir": output_folder,
             merged_doc_name: {}
         }
         output_page_number = 1
@@ -65,8 +101,17 @@ class PdfEngine():
     
 
     def generate_split_dict(self, document_list, output_folder):
+        """Generate Split PDF Setup dictionary from the document list.
+
+        Args:
+            document_list (list): List of PDF files.
+            output_folder (string): Path of output file.
+
+        Returns:
+            dict: Split PDF Setup dictionary.
+        """
         split_dict = {
-            "output_folder": output_folder,
+            "output_dir": output_folder,
         }
         for document in document_list:
             pages = self.get_pdf_pages(document)
@@ -78,12 +123,21 @@ class PdfEngine():
 
 
     def extract_input_files(self, pdf_dict):
+        """Extract Input files from PDF Setup dict.
+
+        Args:
+            pdf_dict (dict): PDF Setup dict.
+
+        Returns:
+            list: list of source files.
+        """
         files = []
         for doc_key, doc_val in pdf_dict.items():
             if doc_key == "output_dir":
                 continue
             
-            for page_key, page_val in doc_val.items():
+            for page_key in doc_val.keys():
+                page_val = doc_val[page_key]
                 input_page = next(iter(page_val))
                 input_doc = page_val[input_page]
                 if input_doc not in files:
@@ -93,6 +147,14 @@ class PdfEngine():
 
     
     def generate_pdfs(self, pdf_dict):
+        """Method to generate PDF files based on PDF Setup dict.
+
+        Args:
+            pdf_dict (dict): PDF Setup dict.
+
+        Returns:
+            list: list of output paths.
+        """
         output_dir = pdf_dict["output_dir"]
         out_paths = []
         for doc_key, doc_val in pdf_dict.items():
@@ -115,12 +177,4 @@ class PdfEngine():
         
         return out_paths
 
-
-# test
-# test_pdf = {'Khinvasara-Shobhit-Passport': {
-#     "1":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_1.pdf"},
-#     "2":{"1": "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal\\Passport_copy_2.pdf"}},
-#     'output_dir': "C:\\Users\\shobh\\Documents\\Shobhit PR Renewal"}
-# test_pdf_engine = PdfEngine()
-# test_pdf_engine.generate_pdfs(test_pdf)
 
