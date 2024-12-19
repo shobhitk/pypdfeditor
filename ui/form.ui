@@ -17,30 +17,17 @@
    </size>
   </property>
   <property name="windowTitle">
-<<<<<<< HEAD
    <string>Pdf Editor</string>
-=======
-   <string>PDF Editor</string>
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
   </property>
   <property name="styleSheet">
    <string notr="true">QToolTip
 {
-<<<<<<< HEAD
-    color: #b1b1b1;
-    border: 1px solid black;
-    background-color:rgb(42,42,42);
-    padding: 1px;
-    border-radius: 3px;
-    opacity: 190;
-=======
      color: #b1b1b1;
      border: 1px solid black;
      background-color:rgb(42,42,42);
      padding: 1px;
      border-radius: 3px;
      opacity: 190;
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 }
 
 QWidget
@@ -53,10 +40,6 @@ QWidget
 QLabel
 {
     color: #b1b1b1;
-<<<<<<< HEAD
-    min-height: 1px;
-=======
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     background-color: rgba(50,50,50,0);
 }
 
@@ -73,14 +56,6 @@ QListWidget:item:selected
 
 }
 
-<<<<<<< HEAD
-QWidget:item
-{
-    alternate-background-color: '#2a2b2c';
-}
-
-=======
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 QMenuBar::item
 {
     background: transparent;
@@ -126,11 +101,7 @@ QWidget:disabled
 
 QLineEdit
 {
-<<<<<<< HEAD
-    background-color: #282828;
-=======
     background-color: #282828 ;
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     padding: 1px;
     border-style: solid;
     border: 1px solid #1e1e1e;
@@ -139,11 +110,7 @@ QLineEdit
 
 QLineEdit:!enabled {
     color: #B1B1B1;
-<<<<<<< HEAD
-    background-color: transparent;
-=======
     background-color: transparent ;
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 }
 
 QPushButton {
@@ -162,11 +129,7 @@ QPushButton:default {
 
 QPushButton:hover {
     color: #FFFFFF;
-<<<<<<< HEAD
-    border: 2px solid #48628e;
-=======
     border : 2px solid #48628e;
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     padding: 0px;
 }
 
@@ -174,69 +137,10 @@ QPushButton:pressed {
     background: #3d3d3d;
 }
 
-<<<<<<< HEAD
-QComboBox
-{
-    background-color: rgb(36,36,36);
-    border: 1px solid #1e1e1e;
-}
-
-QComboBox:item
-{
-    background-color: transparent;
-    border-style: solid;
-    border: 1px solid #1e1e1e;
-    border-radius: 2;
-}
-
-QComboBox:hover
-{
-    border: 2px solid #48628e;
-}
-
-QComboBox:on
-{
-    selection-background-color: #ffaa00;
-}
-
-QComboBox QAbstractItemView
-{
-    selection-background-color: #48628e;
-}
-
-QComboBox::drop-down
-{
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: rgb(35,35,35);
-    border-left-style: solid;
-    background-color: rgb(93,93,93);
- }
-
- QComboBox::down-arrow, QSpinBox::down-arrow, QTimeEdit::down-arrow, QDateEdit::down-arrow
-{
-    width: 16px;
-    height: 14px;
-}
-
-
-QGroupBox:focus
-{
-border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
-}
-
-QTextEdit#publishNotes:focus
-{
-    border: 2px solid #48628e;
-=======
 QListView
 {
     outline: 0;
     background-color: #2D2D2D;
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 }
 
 QPlainTextEdit
@@ -244,87 +148,6 @@ QPlainTextEdit
     background-color: #242424;
 }
 
-<<<<<<< HEAD
-QHeaderView::section
-{
-    background-color: #444444;
-    border-right: 1px solid #2c2c2c;
-    border-left: 0px;
-    border-top: 0px;
-    border-bottom: 0px;
-}
-
-QMainWindow::separator
-{
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #161616, stop: 0.5 #151515, stop: 0.6 #212121, stop:1 #343434);
-    color: white;
-    padding-left: 4px;
-    border: 1px solid #4c4c4c;
-    spacing: 0px; /* spacing between items in the tool bar */
-}
-
-QMainWindow::separator:hover
-{
-
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #d7801a, stop:0.5 #b56c17 stop:1 #ffa02f);
-    color: white;
-    padding-left: 4px;
-    border: 1px solid #6c6c6c;
-    spacing: 0px; /* spacing between items in the tool bar */
-}
-
-QMenu::separator
-{
-    height: 2px;
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #161616, stop: 0.5 #151515, stop: 0.6 #212121, stop:1 #343434);
-    color: white;
-    padding-left: 4px;
-    margin-left: 10px;
-    margin-right: 5px;
-}
-
-QProgressBar
-{
-    height: 22px;
-    border: 0px solid #1e1e1e;;
-    border-radius: 2px;
-    text-align: center;
-    background-color: transparent
-}
-
-QProgressBar::chunk
-{
-    background-color: #48628e;
-    width: 2.15px;
-    margin: 0px;
-}
-
-QCheckBox
-{
-    color: rgb(240,240,240)
-}
-
-QRadioButton::indicator:hover
-{
-    border: 1px solid #6889c1;
-}
-
-QStatusBar {
-    background-color: #2e2e2e;
-}
-
-QStatusBar::item {
-    border: none;
-}
-
-QAbstractScrollArea
-{
-    border-radius: 4px;
-    border: 1px solid #3A3939;
-}
-
-=======
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 QScrollBar:horizontal
 {
     height: 15px;
@@ -343,10 +166,7 @@ QScrollBar::handle:horizontal
 
 QScrollBar::add-line:horizontal
 {
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/right_arrow_disabled.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     width: 10px;
     height: 10px;
     subcontrol-position: right;
@@ -355,10 +175,7 @@ QScrollBar::add-line:horizontal
 
 QScrollBar::sub-line:horizontal
 {
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/left_arrow_disabled.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: left;
@@ -367,10 +184,7 @@ QScrollBar::sub-line:horizontal
 
 QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:on
 {
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/right_arrow.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: right;
@@ -380,10 +194,7 @@ QScrollBar::add-line:horizontal:hover,QScrollBar::add-line:horizontal:on
 
 QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:on
 {
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/left_arrow.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: left;
@@ -419,10 +230,7 @@ QScrollBar::handle:vertical
 
 QScrollBar::sub-line:vertical
 {
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/up_arrow_disabled.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: top;
@@ -432,10 +240,7 @@ QScrollBar::sub-line:vertical
 QScrollBar::add-line:vertical
 {
 
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/down_arrow_disabled.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: bottom;
@@ -445,21 +250,13 @@ QScrollBar::add-line:vertical
 QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
 {
 
-<<<<<<< HEAD
-=======
     border-image: url(:/qss_icons/rc/up_arrow.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 
-<<<<<<< HEAD
-
-QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
-{
-=======
 QHeaderView::section
 {
     background-color: #444444;
@@ -472,7 +269,6 @@ QHeaderView::section
 QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
 {
     border-image: url(:/qss_icons/rc/down_arrow.png);
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     height: 10px;
     width: 10px;
     subcontrol-position: bottom;
@@ -502,20 +298,6 @@ QListWidget::item
     background-color: transparent;
 }
 
-<<<<<<< HEAD
-QToolBar
-{
-    background-color: transparent ;
-    color: transparent ;
-}
-
-QToolButton:hover
-{
-    color: #5d81bd;
-}
-
-=======
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 QSplitter::handle {
     border: 1px solid #333333;
     height: 2px;
@@ -533,8 +315,6 @@ QTreeWidget
     alternate-background-color: #2a2a2a;
     border: 0px;
 }
-<<<<<<< HEAD
-=======
 
 QTreeWidget::branch:has-children:!has-siblings:closed,
 QTreeWidget::branch:closed:has-children:has-siblings {
@@ -553,7 +333,6 @@ QTreeWidget::branch:open:has-children:!has-siblings:hover,
 QTreeWidget::branch:open:has-children:has-siblings:hover  {
 }
 
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
 </string>
   </property>
   <widget class="QWidget" name="central_widget">
@@ -797,11 +576,7 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-<<<<<<< HEAD
-     <height>17</height>
-=======
      <height>20</height>
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -828,10 +603,6 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
     <addaction name="separator"/>
     <addaction name="action_prefs"/>
    </widget>
-<<<<<<< HEAD
-   <addaction name="menu_file"/>
-   <addaction name="menu_edit"/>
-=======
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -841,7 +612,6 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
    <addaction name="menuHelp"/>
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
   </widget>
   <widget class="QStatusBar" name="status_bar"/>
   <action name="action_undo">
@@ -965,14 +735,11 @@ QTreeWidget::branch:open:has-children:has-siblings:hover  {
     <string>Preferences</string>
    </property>
   </action>
-<<<<<<< HEAD
-=======
   <action name="action_about">
    <property name="text">
     <string>About</string>
    </property>
   </action>
->>>>>>> bca9d6d8eecea62509f47fc845bfe4af2409a666
  </widget>
  <resources/>
  <connections/>
